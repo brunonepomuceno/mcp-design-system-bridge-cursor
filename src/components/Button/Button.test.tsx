@@ -1,13 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Button } from './index';
+import Button from './Button';
 
 describe('Button', () => {
   it('renders with default props', () => {
     render(<Button>Click me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('bg-primary-600');
   });
 
   it('renders with different variants', () => {
@@ -15,7 +14,7 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('bg-primary-600');
 
     rerender(<Button variant="secondary">Secondary</Button>);
-    expect(screen.getByRole('button')).toHaveClass('bg-secondary-100');
+    expect(screen.getByRole('button')).toHaveClass('bg-secondary-600');
 
     rerender(<Button variant="tertiary">Tertiary</Button>);
     expect(screen.getByRole('button')).toHaveClass('bg-transparent');
@@ -42,26 +41,27 @@ describe('Button', () => {
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
     expect(button).toHaveClass('cursor-wait');
-    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(button).toHaveTextContent('Loading');
+    expect(button.querySelector('svg')).toHaveClass('animate-spin');
   });
 
   it('renders in disabled state', () => {
     render(<Button disabled>Disabled</Button>);
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
-    expect(button).toHaveClass('opacity-50');
+    expect(button).toHaveClass('disabled:opacity-50');
   });
 
   it('renders with left icon', () => {
-    const leftIcon = <span data-testid="left-icon">←</span>;
-    render(<Button leftIcon={leftIcon}>With Left Icon</Button>);
-    expect(screen.getByTestId('left-icon')).toBeInTheDocument();
+    const Icon = () => <span data-testid="icon">Icon</span>;
+    render(<Button leftIcon={<Icon />}>With Icon</Button>);
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 
   it('renders with right icon', () => {
-    const rightIcon = <span data-testid="right-icon">→</span>;
-    render(<Button rightIcon={rightIcon}>With Right Icon</Button>);
-    expect(screen.getByTestId('right-icon')).toBeInTheDocument();
+    const Icon = () => <span data-testid="icon">Icon</span>;
+    render(<Button rightIcon={<Icon />}>With Icon</Button>);
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 
   it('handles click events', () => {

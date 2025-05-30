@@ -101,4 +101,9 @@ export interface ButtonProps {
    * The form target
    */
   formTarget?: string;
+
+  /**
+   * Click handler for the button
+   */
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 } 

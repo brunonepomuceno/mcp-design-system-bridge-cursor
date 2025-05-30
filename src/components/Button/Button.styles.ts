@@ -6,8 +6,8 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500',
-        secondary: 'bg-secondary-100 text-secondary-900 hover:bg-secondary-200 focus-visible:ring-secondary-500',
-        tertiary: 'bg-transparent text-primary-600 hover:bg-primary-50 focus-visible:ring-primary-500',
+        secondary: 'bg-secondary-600 text-white hover:bg-secondary-700 focus-visible:ring-secondary-500',
+        tertiary: 'bg-transparent text-secondary-900 hover:bg-secondary-100 focus-visible:ring-secondary-500',
       },
       size: {
         sm: 'h-8 px-3 text-sm',
@@ -16,7 +16,6 @@ export const buttonVariants = cva(
       },
       fullWidth: {
         true: 'w-full',
-        false: '',
       },
     },
     defaultVariants: {
