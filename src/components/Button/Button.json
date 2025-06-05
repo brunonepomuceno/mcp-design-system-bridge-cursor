@@ -1,0 +1,87 @@
+{
+  "name": "Button",
+  "description": "Botão reutilizável do design system",
+  "props": [
+    {
+      "name": "variant",
+      "type": "ButtonVariant"
+    },
+    {
+      "name": "size",
+      "type": "ButtonSize"
+    },
+    {
+      "name": "fullWidth",
+      "type": "ButtonFullWidth"
+    },
+    {
+      "name": "isLoading",
+      "type": "boolean"
+    },
+    {
+      "name": "leftIcon",
+      "type": "React.ReactNode"
+    },
+    {
+      "name": "rightIcon",
+      "type": "React.ReactNode"
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string"
+    },
+    {
+      "name": "disabled",
+      "type": "boolean"
+    },
+    {
+      "name": "type",
+      "type": "'button' | 'submit' | 'reset'"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "string"
+    },
+    {
+      "name": "form",
+      "type": "string"
+    },
+    {
+      "name": "formAction",
+      "type": "string"
+    },
+    {
+      "name": "formEncType",
+      "type": "string"
+    },
+    {
+      "name": "formMethod",
+      "type": "'get' | 'post'"
+    },
+    {
+      "name": "formNoValidate",
+      "type": "boolean"
+    },
+    {
+      "name": "formTarget",
+      "type": "string"
+    },
+    {
+      "name": "onClick",
+      "type": "React.MouseEventHandler<HTMLButtonElement>"
+    }
+  ],
+  "styles": {
+    "primary": "bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500",
+    "secondary": "bg-secondary-600 text-white hover:bg-secondary-700 focus-visible:ring-secondary-500",
+    "tertiary": "bg-transparent text-secondary-900 hover:bg-secondary-100 focus-visible:ring-secondary-500"
+  }
+}

@@ -13,7 +13,8 @@
     "build-storybook": "storybook build",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start:server": "node scripts/button-api-server.cjs"
   },
   "keywords": [
     "mcp",
@@ -25,15 +26,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@figma/plugin-typings": "^1.82.0",
+    "chokidar": "^4.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
+    "@figma/plugin-typings": "^1.113.0",
     "@storybook/addon-essentials": "^7.6.17",
     "@storybook/addon-interactions": "^7.6.17",
     "@storybook/addon-links": "^7.6.17",
@@ -65,13 +69,15 @@
     "prettier": "^3.2.5",
     "storybook": "^7.6.17",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.3.3",
+    "typescript": "^5.8.3",
     "vite": "^4.5.2"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.ts"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }

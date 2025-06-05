@@ -1,109 +1,22 @@
-import { VariantProps } from 'class-variance-authority';
-import { buttonVariants } from './Button.styles';
-
-export type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>;
-export type ButtonSize = NonNullable<VariantProps<typeof buttonVariants>['size']>;
-export type ButtonFullWidth = NonNullable<VariantProps<typeof buttonVariants>['fullWidth']>;
-
+// Gerado automaticamente a partir do Button.json
 export interface ButtonProps {
-  /**
-   * The variant of the button
-   * @default 'primary'
-   */
-  variant?: ButtonVariant;
-
-  /**
-   * The size of the button
-   * @default 'md'
-   */
-  size?: ButtonSize;
-
-  /**
-   * Whether the button should take up the full width of its container
-   * @default false
-   */
-  fullWidth?: ButtonFullWidth;
-
-  /**
-   * Whether the button is in a loading state
-   * @default false
-   */
-  isLoading?: boolean;
-
-  /**
-   * Icon to display on the left side of the button
-   */
-  leftIcon?: React.ReactNode;
-
-  /**
-   * Icon to display on the right side of the button
-   */
-  rightIcon?: React.ReactNode;
-
-  /**
-   * The content of the button
-   */
+  variant: ButtonVariant;
+  size: ButtonSize;
+  fullWidth: ButtonFullWidth;
+  isLoading: boolean;
+  leftIcon: React.ReactNode;
+  rightIcon: React.ReactNode;
   children: React.ReactNode;
-
-  /**
-   * Additional CSS class name
-   */
-  className?: string;
-
-  /**
-   * Whether the button is disabled
-   * @default false
-   */
-  disabled?: boolean;
-
-  /**
-   * The type of the button
-   * @default 'button'
-   */
-  type?: 'button' | 'submit' | 'reset';
-
-  /**
-   * The name of the button
-   */
-  name?: string;
-
-  /**
-   * The value of the button
-   */
-  value?: string;
-
-  /**
-   * The form that the button is associated with
-   */
-  form?: string;
-
-  /**
-   * The form action URL
-   */
-  formAction?: string;
-
-  /**
-   * The form encoding type
-   */
-  formEncType?: string;
-
-  /**
-   * The form method
-   */
-  formMethod?: 'get' | 'post';
-
-  /**
-   * Whether the form should be validated
-   */
-  formNoValidate?: boolean;
-
-  /**
-   * The form target
-   */
-  formTarget?: string;
-
-  /**
-   * Click handler for the button
-   */
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-} 
+  className: string;
+  disabled: boolean;
+  type: 'button' | 'submit' | 'reset';
+  name: string;
+  value: string;
+  form: string;
+  formAction: string;
+  formEncType: string;
+  formMethod: 'get' | 'post';
+  formNoValidate: boolean;
+  formTarget: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+}

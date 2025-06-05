@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MCP Button Sync</title>
+  <style>
+    body {
+      font-family: Inter, sans-serif;
+      padding: 16px;
+      color: #333;
+    }
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    button {
+      background: #18B0F1;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    button:hover {
+      background: #0EA5E9;
+    }
+    button:active {
+      background: #0284C7;
+    }
+    #output {
+      background: #F8F9FA;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-top: 16px;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h2>MCP Button Sync</h2>
+  <div>
+    <button id="fetch">Buscar e Criar Button</button>
+    <button id="update">Atualizar Button.json</button>
+  </div>
+  <div class="status" id="status"></div>
+  <pre id="output"></pre>
+  <script>
+    const status = document.getElementById('status');
+    
+    document.getElementById('fetch').onclick = () => {
+      status.textContent = 'Buscando Button.json...';
+      parent.postMessage({ pluginMessage: { type: 'fetch-button-json' } }, '*');
+    };
+    
+    document.getElementById('update').onclick = () => {
+      status.textContent = 'Atualizando Button.json...';
+      const data = window.lastButtonJson || {};
+      parent.postMessage({ pluginMessage: { type: 'update-button-json', data } }, '*');
+    };
+    
+    window.onmessage = (event) => {
+      const { type, data } = event.data.pluginMessage || {};
+      if (type === 'button-json') {
+        window.lastButtonJson = data;
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        status.textContent = 'Button.json carregado com sucesso!';
+      }
+    };
+  </script>
+</body>
+</html> 
