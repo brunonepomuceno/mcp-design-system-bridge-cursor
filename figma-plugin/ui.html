@@ -52,7 +52,6 @@
   <h2>MCP Button Sync</h2>
   <div>
     <button id="fetch">Buscar e Criar Button</button>
-    <button id="update">Atualizar Button.json</button>
   </div>
   <div class="status" id="status"></div>
   <pre id="output"></pre>
@@ -62,12 +61,6 @@
     document.getElementById('fetch').onclick = () => {
       status.textContent = 'Buscando Button.json...';
       parent.postMessage({ pluginMessage: { type: 'fetch-button-json' } }, '*');
-    };
-    
-    document.getElementById('update').onclick = () => {
-      status.textContent = 'Atualizando Button.json...';
-      const data = window.lastButtonJson || {};
-      parent.postMessage({ pluginMessage: { type: 'update-button-json', data } }, '*');
     };
     
     window.onmessage = (event) => {

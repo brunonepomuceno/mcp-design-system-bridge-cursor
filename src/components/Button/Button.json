@@ -4,8 +4,8 @@
   "properties": {},
   "styles": {
     "backgroundColor": "#ff0000",
-    "borderRadius": "10px",
-    "borderWidth": "10px",
+    "borderRadius": "80px",
+    "borderWidth": "1px",
     "borderColor": "#000000",
     "borderStyle": "solid",
     "padding": "20px 20px 20px 20px",

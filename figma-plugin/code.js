@@ -220,6 +220,26 @@ function rgbToHex(r, g, b) {
     };
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
+// Função para aplicar as alterações do código ao Figma
+async function applyCodeChangesToFigma(frame, buttonData) {
+    console.log('[MCP] Aplicando alterações do código ao frame:', frame.id, 'com dados:', buttonData);
+    // Exemplo: aplicar background color
+    if (buttonData.styles && buttonData.styles.backgroundColor) {
+        const hex = buttonData.styles.backgroundColor;
+        const rgb = hexToRgb(hex);
+        frame.fills = [{ type: 'SOLID', color: rgb }];
+    }
+    // Exemplo: aplicar border radius
+    if (buttonData.styles && buttonData.styles.borderRadius) {
+        // Remover 'px' e converter para número
+        const borderRadiusPx = parseFloat(buttonData.styles.borderRadius.replace('px', ''));
+        if (!isNaN(borderRadiusPx)) {
+            frame.cornerRadius = borderRadiusPx;
+        }
+    }
+    // TODO: Adicionar lógica para outras propriedades (border, padding, font, etc.)
+    console.log('[MCP] Alterações básicas aplicadas.');
+}
 // Adicionar listener para mensagens da UI
 figma.ui.onmessage = async (msg) => {
     console.log('[MCP] Mensagem recebida da UI:', msg);
@@ -248,3 +268,48 @@ figma.ui.onmessage = async (msg) => {
         }
     }
 };
+// Variável para armazenar o último timestamp conhecido do button.json
+let lastButtonJsonTimestamp = 0;
+// Função de polling para verificar mudanças no button.json
+async function pollButtonJsonChanges() {
+    try {
+        const response = await fetch('http://localhost:3001/api/button/last-modified');
+        if (!response.ok) {
+            console.error('[MCP] Erro ao buscar timestamp do button.json:', response.status);
+            return;
+        }
+        const data = await response.json();
+        const currentTimestamp = data.timestamp;
+        if (currentTimestamp > lastButtonJsonTimestamp) {
+            console.log('[MCP] button.json mudou. Buscando novos dados...');
+            lastButtonJsonTimestamp = currentTimestamp;
+            // Buscar os dados do button.json
+            const buttonDataResponse = await fetch('http://localhost:3001/api/button');
+            if (!buttonDataResponse.ok) {
+                console.error('[MCP] Erro ao buscar button.json para aplicar:', buttonDataResponse.status);
+                return;
+            }
+            const updatedButtonData = await buttonDataResponse.json();
+            console.log('[MCP] Novos dados do button.json recebidos:', updatedButtonData);
+            // Encontrar o frame do botão no Figma e aplicar as mudanças
+            const buttonFrame = figma.currentPage.findAll(node => node.getPluginData('isButton') === 'true')[0];
+            if (buttonFrame) {
+                await applyCodeChangesToFigma(buttonFrame, updatedButtonData);
+                figma.notify('Botão atualizado do código!');
+            }
+            else {
+                console.log('[MCP] Frame do botão não encontrado no Figma para aplicar atualizações.');
+            }
+        }
+    }
+    catch (error) {
+        console.error('[MCP] Erro no polling de button.json:', error);
+    }
+}
+// Iniciar o polling (a cada 2 segundos, por exemplo)
+const pollingInterval = setInterval(pollButtonJsonChanges, 2000);
+// Limpar o interval quando o plugin for fechado
+figma.on('close', () => {
+    console.log('[MCP] Plugin fechado. Parando polling.');
+    clearInterval(pollingInterval);
+});
