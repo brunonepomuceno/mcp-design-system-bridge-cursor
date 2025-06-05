@@ -5,11 +5,14 @@ const buttonJsonPath = path.join(__dirname, '../src/components/Button/Button.jso
 const buttonTypesPath = path.join(__dirname, '../src/components/Button/Button.types.ts');
 const buttonStylesPath = path.join(__dirname, '../src/components/Button/Button.styles.ts');
 
-function generateTypes(props) {
+function generateTypes(properties) {
   let content = `// Gerado automaticamente a partir do Button.json\n`;
   content += `export interface ButtonProps {\n`;
-  props.forEach(prop => {
-    content += `  ${prop.name}${prop.type.includes('undefined') ? '?' : ''}: ${prop.type};\n`;
+  Object.entries(properties).forEach(([name, value]) => {
+    const type = typeof value === 'string' ? 'string' : 
+                typeof value === 'number' ? 'number' : 
+                typeof value === 'boolean' ? 'boolean' : 'any';
+    content += `  ${name}?: ${type};\n`;
   });
   content += `}\n`;
   return content;
@@ -17,11 +20,24 @@ function generateTypes(props) {
 
 function generateStyles(styles) {
   let content = `// Gerado automaticamente a partir do Button.json\n`;
-  content += `export const buttonVariants = {\n`;
-  Object.entries(styles).forEach(([variant, style]) => {
-    content += `  ${variant}: '${style}',\n`;
+  content += `export const buttonStyles = {\n`;
+  Object.entries(styles).forEach(([key, value]) => {
+    if (key !== 'hover') {
+      content += `  ${key}: '${value}',\n`;
+    }
   });
-  content += `};\n`;
+  content += `};\n\n`;
+  
+  if (styles.hover) {
+    content += `export const buttonHoverStyles = {\n`;
+    Object.entries(styles.hover).forEach(([key, value]) => {
+      if (value) {
+        content += `  ${key}: '${value}',\n`;
+      }
+    });
+    content += `};\n`;
+  }
+  
   return content;
 }
 
@@ -31,8 +47,8 @@ function main() {
     process.exit(1);
   }
   const buttonJson = JSON.parse(fs.readFileSync(buttonJsonPath, 'utf-8'));
-  const typesContent = generateTypes(buttonJson.props);
-  const stylesContent = generateStyles(buttonJson.styles);
+  const typesContent = generateTypes(buttonJson.properties || {});
+  const stylesContent = generateStyles(buttonJson.styles || {});
   fs.writeFileSync(buttonTypesPath, typesContent);
   fs.writeFileSync(buttonStylesPath, stylesContent);
   console.log('Button.types.ts e Button.styles.ts gerados com sucesso!');
