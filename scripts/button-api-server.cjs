@@ -3,6 +3,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -10,6 +11,12 @@ app.use(express.json());
 
 const buttonJsonPath = path.join(__dirname, '../src/components/Button/Button.json');
 const generateScript = path.join(__dirname, 'generate-button-from-json.cjs');
+
+// Verificar se o token do Figma está configurado
+if (!process.env.FIGMA_ACCESS_TOKEN) {
+  console.error('Erro: FIGMA_ACCESS_TOKEN não encontrado no arquivo .env');
+  process.exit(1);
+}
 
 app.get('/api/button', (req, res) => {
   if (!fs.existsSync(buttonJsonPath)) {
