@@ -1,0 +1,36 @@
+{
+  "figma": {
+    "accessToken": "",
+    "fileId": ""
+  },
+  "paths": {
+    "components": "src/components",
+    "tokens": "src/tokens",
+    "icons": "src/icons",
+    "assets": "src/assets"
+  },
+  "generation": {
+    "useTailwind": true,
+    "useCSSModules": true,
+    "useStorybook": true,
+    "useTests": true
+  },
+  "sync": {
+    "autoSync": false,
+    "confirmBeforeSync": true,
+    "keepHistory": true,
+    "maxHistoryItems": 10
+  },
+  "validation": {
+    "enforceNaming": true,
+    "checkBreakingChanges": true,
+    "validateTokens": true,
+    "validateComponents": true
+  },
+  "output": {
+    "format": "typescript",
+    "indent": 2,
+    "lineEnding": "lf",
+    "includeComments": true
+  }
+}
