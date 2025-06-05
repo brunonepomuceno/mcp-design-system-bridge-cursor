@@ -1,97 +1,114 @@
+console.log('[MCP] Plugin iniciado');
+
 figma.showUI(__html__, { width: 320, height: 400 });
 
-// Função para criar o botão no Figma
-async function createButtonInFigma(buttonData: any) {
-  console.log('[MCP] Iniciando criação do botão no Figma', buttonData);
-  // Criar o frame do botão
-  const buttonFrame = figma.createFrame();
-  buttonFrame.name = buttonData.name;
-  buttonFrame.resize(120, 40); // Tamanho padrão do botão
-  console.log('[MCP] Frame criado');
+// Interfaces
+interface ButtonData {
+  name: string;
+  description: string;
+  props: any[];
+  styles: {
+    backgroundColor?: string;
+    borderRadius?: string;
+  };
+}
 
-  // Criar o texto do botão
-  const text = figma.createText();
-  text.characters = "Button";
-  console.log('[MCP] Nó de texto criado');
-  
-  // Carregar a fonte
+// Função auxiliar para converter hex para RGB
+function hexToRgb(hex: string) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16) / 255,
+    g: parseInt(result[2], 16) / 255,
+    b: parseInt(result[3], 16) / 255
+  } : { r: 0, g: 0, b: 0 };
+}
+
+// Função para criar o botão no Figma
+async function createButtonInFigma(buttonData: ButtonData) {
   try {
-    await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-    console.log('[MCP] Fonte Inter carregada');
-  } catch (e) {
-    console.error('[MCP] Erro ao carregar fonte Inter', e);
-    figma.notify('Erro ao carregar fonte Inter');
-    return;
-  }
-  text.fontSize = 14;
-  
-  // Centralizar o texto no frame
-  text.x = (buttonFrame.width - text.width) / 2;
-  text.y = (buttonFrame.height - text.height) / 2;
-  console.log('[MCP] Texto centralizado');
-  
-  // Adicionar o texto ao frame
-  buttonFrame.appendChild(text);
-  console.log('[MCP] Texto adicionado ao frame');
-  
-  // Aplicar estilos baseados nas variantes
-  const styles = buttonData.styles;
-  if (styles.primary) {
-    // Aplicar estilo primary como padrão
-    buttonFrame.fills = [{ type: 'SOLID', color: { r: 0.055, g: 0.647, b: 0.914 } }]; // primary-600
-    text.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }]; // white
-    console.log('[MCP] Estilo primary aplicado');
-  }
-  
-  // Adicionar auto-layout
-  buttonFrame.layoutMode = "HORIZONTAL";
-  buttonFrame.primaryAxisAlignItems = "CENTER";
-  buttonFrame.counterAxisAlignItems = "CENTER";
-  buttonFrame.paddingLeft = 16;
-  buttonFrame.paddingRight = 16;
-  buttonFrame.paddingTop = 8;
-  buttonFrame.paddingBottom = 8;
-  buttonFrame.cornerRadius = 6;
-  console.log('[MCP] Auto-layout e padding aplicados');
-  
-  // Criar variantes
-  const variants = Object.keys(styles).map(variant => {
-    const variantFrame = buttonFrame.clone();
-    variantFrame.name = `${buttonData.name}/${variant}`;
-    
-    // Aplicar estilos específicos da variante
-    if (variant === 'secondary') {
-      variantFrame.fills = [{ type: 'SOLID', color: { r: 0.392, g: 0.459, b: 0.545 } }]; // secondary-600
-      console.log('[MCP] Estilo secondary aplicado');
-    } else if (variant === 'tertiary') {
-      variantFrame.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }]; // transparent
-      text.fills = [{ type: 'SOLID', color: { r: 0.118, g: 0.161, b: 0.231 } }]; // secondary-900
-      console.log('[MCP] Estilo tertiary aplicado');
+    console.log('[MCP] Iniciando criação do botão no Figma', buttonData);
+
+    // Criar um frame para o botão
+    const frame = figma.createFrame();
+    frame.name = buttonData.name;
+    frame.resize(300, 120); // Aumentado para acomodar mais informações
+    frame.x = 0;
+    frame.y = 0;
+    frame.fills = [{ type: 'SOLID', color: { r: 0.95, g: 0.95, b: 0.95 } }]; // Fundo cinza claro
+    frame.cornerRadius = 8;
+    console.log('[MCP] Frame criado');
+
+    // Listar fontes disponíveis
+    const availableFonts = await figma.listAvailableFontsAsync();
+    console.log('[MCP] Fontes disponíveis:', availableFonts);
+
+    // Tentar carregar a fonte Inter
+    let fontName = { family: "Inter", style: "Regular" };
+    try {
+      console.log('[MCP] Tentando carregar fonte Inter');
+      await figma.loadFontAsync(fontName);
+    } catch (error) {
+      console.log('[MCP] Erro ao carregar Inter, tentando fonte alternativa');
+      // Se Inter não estiver disponível, usar a primeira fonte do sistema
+      const systemFont = availableFonts.find(f => !f.fontName.family.startsWith('.'));
+      if (systemFont) {
+        fontName = systemFont.fontName;
+        await figma.loadFontAsync(fontName);
+        console.log('[MCP] Usando fonte alternativa:', fontName);
+      } else {
+        throw new Error('Nenhuma fonte disponível');
+      }
     }
-    
-    return variantFrame;
-  });
-  console.log('[MCP] Variantes criadas', variants);
-  
-  // Criar o componente principal
-  const component = figma.createComponent();
-  component.name = buttonData.name;
-  component.resize(buttonFrame.width, buttonFrame.height);
-  component.appendChild(buttonFrame);
-  console.log('[MCP] Componente principal criado');
-  
-  // Adicionar as variantes ao componente
-  variants.forEach(variant => {
-    component.appendChild(variant);
-    console.log(`[MCP] Variante adicionada: ${variant.name}`);
-  });
-  
-  // Selecionar o componente criado
-  figma.currentPage.selection = [component];
-  figma.viewport.scrollAndZoomIntoView([component]);
-  console.log('[MCP] Componente selecionado e centralizado na viewport');
-  
-  return component;
+
+    // Criar título
+    const titleText = figma.createText();
+    titleText.characters = buttonData.name;
+    titleText.fontName = fontName;
+    titleText.fontSize = 20;
+    titleText.x = 20;
+    titleText.y = 20;
+    titleText.fills = [{ type: 'SOLID', color: { r: 0.2, g: 0.2, b: 0.2 } }];
+    frame.appendChild(titleText);
+
+    // Criar descrição
+    const descriptionText = figma.createText();
+    descriptionText.characters = buttonData.description;
+    descriptionText.fontName = fontName;
+    descriptionText.fontSize = 14;
+    descriptionText.x = 20;
+    descriptionText.y = 50;
+    descriptionText.fills = [{ type: 'SOLID', color: { r: 0.4, g: 0.4, b: 0.4 } }];
+    frame.appendChild(descriptionText);
+
+    // Criar informações das props
+    const propsText = figma.createText();
+    propsText.characters = `${buttonData.props.length} propriedades`;
+    propsText.fontName = fontName;
+    propsText.fontSize = 12;
+    propsText.x = 20;
+    propsText.y = 80;
+    propsText.fills = [{ type: 'SOLID', color: { r: 0.6, g: 0.6, b: 0.6 } }];
+    frame.appendChild(propsText);
+
+    // Adicionar auto-layout
+    frame.layoutMode = "VERTICAL";
+    frame.primaryAxisAlignItems = "MIN";
+    frame.counterAxisAlignItems = "MIN";
+    frame.paddingLeft = 20;
+    frame.paddingRight = 20;
+    frame.paddingTop = 20;
+    frame.paddingBottom = 20;
+    frame.itemSpacing = 10;
+
+    // Centralizar o frame na viewport
+    figma.viewport.scrollAndZoomIntoView([frame]);
+
+    console.log('[MCP] Botão criado com sucesso');
+    return frame;
+  } catch (error) {
+    console.error('[MCP] Erro ao criar botão:', error);
+    throw error;
+  }
 }
 
 figma.ui.onmessage = async (msg) => {
