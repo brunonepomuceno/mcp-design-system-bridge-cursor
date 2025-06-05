@@ -23,9 +23,6 @@ async function createButtonInFigma(buttonData) {
         frame.fills = [{ type: 'SOLID', color: { r: 0.95, g: 0.95, b: 0.95 } }]; // Fundo cinza claro
         frame.cornerRadius = 8;
         console.log('[MCP] Frame criado');
-        // Listar fontes disponíveis
-        const availableFonts = await figma.listAvailableFontsAsync();
-        console.log('[MCP] Fontes disponíveis:', availableFonts);
         // Tentar carregar a fonte Inter
         let fontName = { family: "Inter", style: "Regular" };
         try {
@@ -35,6 +32,7 @@ async function createButtonInFigma(buttonData) {
         catch (error) {
             console.log('[MCP] Erro ao carregar Inter, tentando fonte alternativa');
             // Se Inter não estiver disponível, usar a primeira fonte do sistema
+            const availableFonts = await figma.listAvailableFontsAsync();
             const systemFont = availableFonts.find(f => !f.fontName.family.startsWith('.'));
             if (systemFont) {
                 fontName = systemFont.fontName;
@@ -99,17 +97,73 @@ async function updateButtonJson(frame) {
         const response = await fetch('http://localhost:3001/api/button');
         const currentButtonData = await response.json();
         console.log('[MCP] Estado atual do button.json:', currentButtonData);
+        // Extrair as cores do frame
+        const fills = frame.fills;
+        const backgroundColor = fills && fills[0] && fills[0].type === 'SOLID'
+            ? `#${Math.round(fills[0].color.r * 255).toString(16).padStart(2, '0')}${Math.round(fills[0].color.g * 255).toString(16).padStart(2, '0')}${Math.round(fills[0].color.b * 255).toString(16).padStart(2, '0')}`
+            : (currentButtonData.styles && currentButtonData.styles.backgroundColor) || '#f2f2f2';
+        // Extrair as propriedades de borda
+        const strokes = frame.strokes;
+        const borderColor = strokes && strokes[0] && strokes[0].type === 'SOLID'
+            ? `#${Math.round(strokes[0].color.r * 255).toString(16).padStart(2, '0')}${Math.round(strokes[0].color.g * 255).toString(16).padStart(2, '0')}${Math.round(strokes[0].color.b * 255).toString(16).padStart(2, '0')}`
+            : (currentButtonData.styles && currentButtonData.styles.borderColor) || '#000000';
+        // Extrair o texto do botão
+        const textNodes = frame.findAll(node => node.type === 'TEXT');
+        let buttonText = '';
+        if (textNodes.length > 0 && textNodes[0] && typeof textNodes[0].characters === 'string') {
+            buttonText = textNodes[0].characters;
+        }
+        // Extrair as propriedades de fonte
+        let fontSize = '14px';
+        let fontWeight = 'normal';
+        let fontFamily = 'Inter';
+        let color = (currentButtonData.styles && currentButtonData.styles.color) || '#000000';
+        if (textNodes.length > 0 && textNodes[0]) {
+            if (textNodes[0].fontSize) {
+                fontSize = String(textNodes[0].fontSize) + 'px';
+            }
+            if (textNodes[0].fontWeight) {
+                fontWeight = String(textNodes[0].fontWeight);
+            }
+            if (textNodes[0].fontName) {
+                const fontName = textNodes[0].fontName;
+                try {
+                    // Tentar carregar a fonte antes de usá-la
+                    await figma.loadFontAsync(fontName);
+                    fontFamily = fontName.family;
+                }
+                catch (error) {
+                    console.log('[MCP] Erro ao carregar fonte:', fontName.family, 'usando fallback');
+                    // Se falhar, usar a fonte do sistema
+                    const availableFonts = await figma.listAvailableFontsAsync();
+                    const systemFont = availableFonts.find(f => !f.fontName.family.startsWith('.'));
+                    if (systemFont) {
+                        fontFamily = systemFont.fontName.family;
+                        await figma.loadFontAsync(systemFont.fontName);
+                    }
+                }
+            }
+            if (textNodes[0].fills) {
+                const textFills = textNodes[0].fills;
+                if (textFills[0] && textFills[0].type === 'SOLID') {
+                    color = `#${Math.round(textFills[0].color.r * 255).toString(16).padStart(2, '0')}${Math.round(textFills[0].color.g * 255).toString(16).padStart(2, '0')}${Math.round(textFills[0].color.b * 255).toString(16).padStart(2, '0')}`;
+                }
+            }
+        }
         // Criar um novo objeto com os dados atualizados, mantendo os dados existentes
         const updatedButtonData = Object.assign({}, currentButtonData, {
+            description: buttonText || currentButtonData.description,
             styles: Object.assign({}, currentButtonData.styles, {
+                backgroundColor,
                 borderRadius: `${String(frame.cornerRadius)}px`,
-                borderWidth: (currentButtonData.styles && currentButtonData.styles.borderWidth) || '1px',
-                borderColor: (currentButtonData.styles && currentButtonData.styles.borderColor) || '#000000',
+                borderWidth: `${String(frame.strokeWeight)}px`,
+                borderColor,
                 borderStyle: (currentButtonData.styles && currentButtonData.styles.borderStyle) || 'solid',
-                padding: (currentButtonData.styles && currentButtonData.styles.padding) || '8px 16px',
-                fontSize: (currentButtonData.styles && currentButtonData.styles.fontSize) || '14px',
-                fontWeight: (currentButtonData.styles && currentButtonData.styles.fontWeight) || 'normal',
-                color: (currentButtonData.styles && currentButtonData.styles.color) || '#000000',
+                padding: `${String(frame.paddingTop)}px ${String(frame.paddingRight)}px ${String(frame.paddingBottom)}px ${String(frame.paddingLeft)}px`,
+                fontSize,
+                fontWeight,
+                fontFamily,
+                color,
                 textAlign: (currentButtonData.styles && currentButtonData.styles.textAlign) || 'center',
                 cursor: (currentButtonData.styles && currentButtonData.styles.cursor) || 'pointer',
                 transition: (currentButtonData.styles && currentButtonData.styles.transition) || 'all 0.2s ease-in-out',

@@ -1,17 +1,18 @@
 // Gerado automaticamente a partir do Button.json
 export const buttonStyles = {
-  backgroundColor: '#f2f2f2',
-  borderRadius: '12px',
-  borderWidth: '1px',
+  backgroundColor: '#ff0000',
+  borderRadius: '10px',
+  borderWidth: '10px',
   borderColor: '#000000',
   borderStyle: 'solid',
-  padding: '8px 16px',
-  fontSize: '14px',
-  fontWeight: 'normal',
-  color: '#000000',
+  padding: '20px 20px 20px 20px',
+  fontSize: '20px',
+  fontWeight: '400',
+  color: '#333333',
   textAlign: 'center',
   cursor: 'pointer',
   transition: 'all 0.2s ease-in-out',
+  fontFamily: 'Satoshi',
 };
 
 export const buttonHoverStyles = {
