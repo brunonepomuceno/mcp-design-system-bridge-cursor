@@ -25,6 +25,7 @@ interface ButtonData {
       color?: string;
       borderColor?: string;
     };
+    fontFamily?: string;
   };
 }
 
@@ -75,6 +76,7 @@ async function createButtonInFigma(buttonData: ButtonData) {
     // Criar título
     const titleText = figma.createText();
     titleText.characters = buttonData.name;
+    titleText.name = 'Button Title';
     titleText.fontName = fontName;
     titleText.fontSize = 20;
     titleText.x = 20;
@@ -85,6 +87,7 @@ async function createButtonInFigma(buttonData: ButtonData) {
     // Criar descrição
     const descriptionText = figma.createText();
     descriptionText.characters = buttonData.description;
+    descriptionText.name = 'Button Description';
     descriptionText.fontName = fontName;
     descriptionText.fontSize = 14;
     descriptionText.x = 20;
@@ -95,6 +98,7 @@ async function createButtonInFigma(buttonData: ButtonData) {
     // Criar informações das props
     const propsText = figma.createText();
     propsText.characters = `${Object.keys(buttonData.properties).length} propriedades`;
+    propsText.name = 'Button Properties';
     propsText.fontName = fontName;
     propsText.fontSize = 12;
     propsText.x = 20;
@@ -272,26 +276,141 @@ function rgbToHex(r: number, g: number, b: number): string {
 // Função para aplicar as alterações do código ao Figma
 async function applyCodeChangesToFigma(frame: FrameNode, buttonData: ButtonData) {
   console.log('[MCP] Aplicando alterações do código ao frame:', frame.id, 'com dados:', buttonData);
+  console.log('[MCP Debug] buttonData.name received:', buttonData.name);
+  console.log('[MCP Debug] frame.name BEFORE update:', frame.name);
 
-  // Exemplo: aplicar background color
-  if (buttonData.styles && buttonData.styles.backgroundColor) {
-    const hex = buttonData.styles.backgroundColor;
-    const rgb = hexToRgb(hex);
-    frame.fills = [{ type: 'SOLID', color: rgb }];
+  // Atualizar nome do frame
+  if (buttonData.name) {
+    frame.name = buttonData.name;
+    console.log('[MCP Debug] frame.name AFTER update:', frame.name);
+    
+    // Atualizar o título do botão
+    const titleText = frame.findOne(node => node.name === 'Button Title') as TextNode;
+    console.log('[MCP Debug] Found titleText by name:', titleText);
+    if (titleText) {
+      console.log('[MCP Debug] titleText characters BEFORE update:', titleText.characters);
+      await figma.loadFontAsync(titleText.fontName as FontName); 
+      titleText.characters = buttonData.name;
+      console.log('[MCP Debug] titleText characters AFTER update:', titleText.characters);
+    } else {
+      console.log('[MCP Debug] Title text node (named "Button Title") NOT FOUND!');
+    }
+  } else {
+    console.log('[MCP Debug] buttonData.name is undefined or empty. Skipping frame name and title text update.');
   }
 
-  // Exemplo: aplicar border radius
-  if (buttonData.styles && buttonData.styles.borderRadius) {
-    // Remover 'px' e converter para número
-    const borderRadiusPx = parseFloat(buttonData.styles.borderRadius.replace('px', ''));
-    if (!isNaN(borderRadiusPx)) {
-      frame.cornerRadius = borderRadiusPx;
+  // Atualizar descrição
+  const descriptionText = frame.findOne(node => node.name === 'Button Description') as TextNode;
+  console.log('[MCP Debug] Found descriptionText by name:', descriptionText);
+  if (descriptionText && buttonData.description) {
+    console.log('[MCP Debug] descriptionText characters BEFORE update:', descriptionText.characters);
+    await figma.loadFontAsync(descriptionText.fontName as FontName);
+    descriptionText.characters = buttonData.description;
+    console.log('[MCP Debug] descriptionText characters AFTER update:', descriptionText.characters);
+  } else {
+    console.log('[MCP Debug] Description text node (named "Button Description") NOT FOUND, or buttonData.description is undefined/empty.');
+  }
+
+  // Atualizar informações das props
+  const propsText = frame.findOne(node => node.name === 'Button Properties') as TextNode;
+  console.log('[MCP Debug] Found propsText by name:', propsText);
+  if (propsText && buttonData.properties) {
+    console.log('[MCP Debug] propsText characters BEFORE update:', propsText.characters);
+    await figma.loadFontAsync(propsText.fontName as FontName);
+    propsText.characters = `${Object.keys(buttonData.properties).length} propriedades`;
+    console.log('[MCP Debug] propsText characters AFTER update:', propsText.characters);
+  } else {
+    console.log('[MCP Debug] Properties text node (named "Button Properties") NOT FOUND, or buttonData.properties is undefined/empty.');
+  }
+
+  // Atualizar estilos
+  if (buttonData.styles) {
+    // Background color
+    if (buttonData.styles.backgroundColor) {
+      const hex = buttonData.styles.backgroundColor;
+      const rgb = hexToRgb(hex);
+      frame.fills = [{ type: 'SOLID', color: rgb }];
+    }
+
+    // Border radius
+    if (buttonData.styles.borderRadius) {
+      const borderRadiusPx = parseFloat(buttonData.styles.borderRadius.replace('px', ''));
+      if (!isNaN(borderRadiusPx)) {
+        frame.cornerRadius = borderRadiusPx;
+      }
+    }
+
+    // Border
+    if (buttonData.styles.borderWidth) {
+      const borderWidth = parseFloat(buttonData.styles.borderWidth.replace('px', ''));
+      if (!isNaN(borderWidth)) {
+        frame.strokeWeight = borderWidth;
+      }
+    }
+
+    if (buttonData.styles.borderColor) {
+      const hex = buttonData.styles.borderColor;
+      const rgb = hexToRgb(hex);
+      frame.strokes = [{ type: 'SOLID', color: rgb }];
+    }
+
+    // Padding
+    if (buttonData.styles.padding) {
+      const paddingValues = buttonData.styles.padding.split(' ').map(v => parseFloat(v.replace('px', '')));
+      if (paddingValues.length === 4) {
+        frame.paddingTop = paddingValues[0];
+        frame.paddingRight = paddingValues[1];
+        frame.paddingBottom = paddingValues[2];
+        frame.paddingLeft = paddingValues[3];
+      }
+    }
+
+    // Text styles
+    const textNodes = frame.findAll(node => node.type === 'TEXT') as TextNode[];
+    if (textNodes.length > 0) {
+      const textNode = textNodes[0];
+      
+      if (buttonData.styles.fontSize) {
+        const fontSize = parseFloat(buttonData.styles.fontSize.replace('px', ''));
+        if (!isNaN(fontSize)) {
+          textNode.fontSize = fontSize;
+        }
+      }
+
+      if (buttonData.styles.fontWeight) {
+        try {
+          const currentFont = textNode.fontName as FontName;
+          const fontName = { 
+            family: currentFont.family, 
+            style: buttonData.styles.fontWeight === '400' ? 'Regular' : 
+                   buttonData.styles.fontWeight === '700' ? 'Bold' : 'Regular'
+          };
+          await figma.loadFontAsync(fontName);
+          textNode.fontName = fontName;
+        } catch (error) {
+          console.log('[MCP] Erro ao carregar fonte com peso:', buttonData.styles.fontWeight);
+        }
+      }
+
+      if (buttonData.styles.color) {
+        const hex = buttonData.styles.color;
+        const rgb = hexToRgb(hex);
+        textNode.fills = [{ type: 'SOLID', color: rgb }];
+      }
+
+      if (buttonData.styles.fontFamily) {
+        try {
+          const fontName = { family: buttonData.styles.fontFamily, style: 'Regular' };
+          await figma.loadFontAsync(fontName);
+          textNode.fontName = fontName;
+        } catch (error) {
+          console.log('[MCP] Erro ao carregar fonte:', buttonData.styles.fontFamily);
+        }
+      }
     }
   }
 
-  // TODO: Adicionar lógica para outras propriedades (border, padding, font, etc.)
-
-  console.log('[MCP] Alterações básicas aplicadas.');
+  console.log('[MCP] Todas as alterações foram aplicadas com sucesso.');
 }
 
 // Adicionar listener para mensagens da UI
