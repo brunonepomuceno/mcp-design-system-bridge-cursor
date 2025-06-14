@@ -33,12 +33,7 @@ export class ComponentAnalyzer {
 
   private async readSourceFile(filePath: string): Promise<ts.SourceFile> {
     const content = await fs.readFile(filePath, 'utf-8');
-    return ts.createSourceFile(
-      filePath,
-      content,
-      ts.ScriptTarget.Latest,
-      true
-    );
+    return ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
   }
 
   private extractProps(sourceFile: ts.SourceFile): any[] {
@@ -153,7 +148,7 @@ export class ComponentAnalyzer {
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {
-        components.push(...await this.findComponents(fullPath));
+        components.push(...(await this.findComponents(fullPath)));
       } else if (entry.isFile() && entry.name.endsWith('.tsx')) {
         components.push(fullPath);
       }
@@ -195,4 +190,4 @@ export class ComponentAnalyzer {
     }
     return undefined;
   }
-} 
+}

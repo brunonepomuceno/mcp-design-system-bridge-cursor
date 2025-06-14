@@ -13,7 +13,7 @@ export class TokenExtractor {
 
   async extractComponents(node: FigmaNode): Promise<FigmaComponent[]> {
     const components: FigmaComponent[] = [];
-    
+
     if (node.type === 'COMPONENT' || node.type === 'COMPONENT_SET') {
       components.push({
         id: node.id,
@@ -25,7 +25,7 @@ export class TokenExtractor {
 
     if (node.children) {
       for (const child of node.children) {
-        components.push(...await this.extractComponents(child));
+        components.push(...(await this.extractComponents(child)));
       }
     }
 
@@ -49,7 +49,7 @@ export class TokenExtractor {
 
     if (node.children) {
       for (const child of node.children) {
-        icons.push(...await this.extractIcons(child));
+        icons.push(...(await this.extractIcons(child)));
       }
     }
 
@@ -71,7 +71,7 @@ export class TokenExtractor {
 
     if (node.children) {
       for (const child of node.children) {
-        images.push(...await this.extractImages(child));
+        images.push(...(await this.extractImages(child)));
       }
     }
 
@@ -226,4 +226,4 @@ export class TokenExtractor {
   private borderToCSS(stroke: any, weight: number): string {
     return `${weight}px solid ${this.rgbToHex(stroke.color)}`;
   }
-} 
+}

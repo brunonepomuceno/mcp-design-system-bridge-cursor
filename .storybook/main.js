@@ -1,6 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
   addons: [
     '@storybook/addon-links',
@@ -26,7 +26,7 @@ module.exports = {
     autodocs: true,
   },
   staticDirs: ['../public'],
-  webpackFinal: async (config) => {
+  webpackFinal: async config => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@mcp/components': path.resolve(__dirname, '../src/components'),
@@ -34,4 +34,4 @@ module.exports = {
     };
     return config;
   },
-}; 
+};

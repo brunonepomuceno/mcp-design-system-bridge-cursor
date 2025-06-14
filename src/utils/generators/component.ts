@@ -9,7 +9,9 @@ export class ComponentGenerator {
     const stories = this.generateStories(spec);
     const tests = this.generateTests(spec);
     const index = this.generateIndex(spec.name);
-    const hooks = spec.props.some(p => p.type.includes('use')) ? this.generateHooks(spec) : undefined;
+    const hooks = spec.props.some(p => p.type.includes('use'))
+      ? this.generateHooks(spec)
+      : undefined;
 
     return {
       component,
@@ -21,7 +23,10 @@ export class ComponentGenerator {
     };
   }
 
-  async generateVariants(baseComponent: string, variants: ComponentSpec[]): Promise<ReactComponentOutput> {
+  async generateVariants(
+    baseComponent: string,
+    variants: ComponentSpec[]
+  ): Promise<ReactComponentOutput> {
     // Implementation for generating component variants
     return {
       component: '',
@@ -76,10 +81,12 @@ export { ${spec.name} };
   }
 
   private generateTypes(spec: ComponentSpec): string {
-    const props = spec.props.map(prop => {
-      const required = prop.required ? '' : '?';
-      return `  ${prop.name}${required}: ${prop.type};${prop.description ? ` // ${prop.description}` : ''}`;
-    }).join('\n');
+    const props = spec.props
+      .map(prop => {
+        const required = prop.required ? '' : '?';
+        return `  ${prop.name}${required}: ${prop.type};${prop.description ? ` // ${prop.description}` : ''}`;
+      })
+      .join('\n');
 
     return `
 import { HTMLAttributes } from 'react';
@@ -91,11 +98,16 @@ ${props}
   }
 
   private generateStories(spec: ComponentSpec): string {
-    const stories = spec.examples?.map(example => `
+    const stories =
+      spec.examples
+        ?.map(
+          example => `
 export const ${example.name} = {
   args: ${example.code},
 };
-`).join('\n') || '';
+`
+        )
+        .join('\n') || '';
 
     return `
 import type { Meta, StoryObj } from '@storybook/react';
@@ -140,13 +152,17 @@ export * from './${name}.types';
       return '{}';
     }
 
-    const variants = spec.variants.map(variant => {
-      const props = Object.entries(variant.props).map(([key, value]) => {
-        return `      ${key}: ${JSON.stringify(value)}`;
-      }).join(',\n');
+    const variants = spec.variants
+      .map(variant => {
+        const props = Object.entries(variant.props)
+          .map(([key, value]) => {
+            return `      ${key}: ${JSON.stringify(value)}`;
+          })
+          .join(',\n');
 
-      return `    ${variant.name}: {\n${props}\n    }`;
-    }).join(',\n');
+        return `    ${variant.name}: {\n${props}\n    }`;
+      })
+      .join(',\n');
 
     return `{
   variants: {
@@ -169,10 +185,12 @@ export function ${hookSpec.name}(${this.generateHookParameters(hookSpec)}) {
   }
 
   private generateHookTypes(hookSpec: HookSpec): string {
-    const parameters = hookSpec.parameters.map(p => {
-      const required = p.required ? '' : '?';
-      return `  ${p.name}${required}: ${p.type};${p.description ? ` // ${p.description}` : ''}`;
-    }).join('\n');
+    const parameters = hookSpec.parameters
+      .map(p => {
+        const required = p.required ? '' : '?';
+        return `  ${p.name}${required}: ${p.type};${p.description ? ` // ${p.description}` : ''}`;
+      })
+      .join('\n');
 
     return `
 export interface ${hookSpec.name}Props {
@@ -205,9 +223,11 @@ export * from './${name}.types';
   }
 
   private generateHookParameters(hookSpec: HookSpec): string {
-    return hookSpec.parameters.map(p => {
-      const defaultValue = p.default ? ` = ${JSON.stringify(p.default)}` : '';
-      return `${p.name}${defaultValue}`;
-    }).join(', ');
+    return hookSpec.parameters
+      .map(p => {
+        const defaultValue = p.default ? ` = ${JSON.stringify(p.default)}` : '';
+        return `${p.name}${defaultValue}`;
+      })
+      .join(', ');
   }
-} 
+}

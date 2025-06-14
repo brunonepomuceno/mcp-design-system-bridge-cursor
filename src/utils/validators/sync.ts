@@ -56,7 +56,11 @@ export class SyncValidator {
     };
   }
 
-  private validateNewComponent(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateNewComponent(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check required fields
@@ -99,7 +103,11 @@ export class SyncValidator {
     }
   }
 
-  private validateComponentUpdate(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateComponentUpdate(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check for breaking changes
@@ -121,7 +129,11 @@ export class SyncValidator {
     }
   }
 
-  private validateComponentDeletion(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateComponentDeletion(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     // Check if component is in use
     if (change.details.usageCount > 0) {
       errors.push({
@@ -132,7 +144,11 @@ export class SyncValidator {
     }
   }
 
-  private validateNewToken(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateNewToken(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check required fields
@@ -162,7 +178,11 @@ export class SyncValidator {
     }
   }
 
-  private validateTokenUpdate(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateTokenUpdate(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check for breaking changes
@@ -184,7 +204,11 @@ export class SyncValidator {
     }
   }
 
-  private validateTokenDeletion(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateTokenDeletion(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     // Check if token is in use
     if (change.details.usageCount > 0) {
       errors.push({
@@ -195,7 +219,11 @@ export class SyncValidator {
     }
   }
 
-  private validateNewIcon(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateNewIcon(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check required fields
@@ -225,7 +253,11 @@ export class SyncValidator {
     }
   }
 
-  private validateIconUpdate(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateIconUpdate(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check for breaking changes
@@ -247,7 +279,11 @@ export class SyncValidator {
     }
   }
 
-  private validateIconDeletion(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateIconDeletion(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     // Check if icon is in use
     if (change.details.usageCount > 0) {
       errors.push({
@@ -258,7 +294,11 @@ export class SyncValidator {
     }
   }
 
-  private validateNewImage(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateNewImage(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check required fields
@@ -288,7 +328,11 @@ export class SyncValidator {
     }
   }
 
-  private validateImageUpdate(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateImageUpdate(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     const { details } = change;
 
     // Check for breaking changes
@@ -310,7 +354,11 @@ export class SyncValidator {
     }
   }
 
-  private validateImageDeletion(change: any, errors: ValidationError[], warnings: ValidationWarning[]): void {
+  private validateImageDeletion(
+    change: any,
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
+  ): void {
     // Check if image is in use
     if (change.details.usageCount > 0) {
       errors.push({
@@ -320,4 +368,4 @@ export class SyncValidator {
       });
     }
   }
-} 
+}

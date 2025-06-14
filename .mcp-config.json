@@ -1,0 +1,19 @@
+{
+  "figma": {
+    "fileKey": "UG3aHTf3KPLN8CxPG9VmBf",
+    "pageName": "Icons",
+    "nodeIds": {
+      "icons": []
+    }
+  },
+  "output": {
+    "components": {
+      "path": "src/components",
+      "format": "tsx"
+    },
+    "styles": {
+      "path": "src/styles",
+      "format": "ts"
+    }
+  }
+}

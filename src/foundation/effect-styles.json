@@ -1,0 +1,77 @@
+[
+  {
+    "id": "3613:22631",
+    "name": "Drop Shadow/300",
+    "description": ""
+  },
+  {
+    "id": "3613:22630",
+    "name": "Drop Shadow/200",
+    "description": ""
+  },
+  {
+    "id": "3613:22629",
+    "name": "Drop Shadow/100",
+    "description": ""
+  },
+  {
+    "id": "3613:22632",
+    "name": "Drop Shadow/400",
+    "description": ""
+  },
+  {
+    "id": "3613:22633",
+    "name": "Drop Shadow/500",
+    "description": ""
+  },
+  {
+    "id": "3613:22634",
+    "name": "Drop Shadow/600",
+    "description": ""
+  },
+  {
+    "id": "227:18548",
+    "name": "Inner Shadow/100",
+    "description": ""
+  },
+  {
+    "id": "227:20272",
+    "name": "Inner Shadow/200",
+    "description": ""
+  },
+  {
+    "id": "227:20271",
+    "name": "Inner Shadow/300",
+    "description": ""
+  },
+  {
+    "id": "227:20273",
+    "name": "Inner Shadow/400",
+    "description": ""
+  },
+  {
+    "id": "227:20274",
+    "name": "Inner Shadow/500",
+    "description": ""
+  },
+  {
+    "id": "227:20275",
+    "name": "Inner Shadow/600",
+    "description": ""
+  },
+  {
+    "id": "228:7059",
+    "name": "Blur/Overlay",
+    "description": ""
+  },
+  {
+    "id": "227:20342",
+    "name": "Blur/Layer",
+    "description": ""
+  },
+  {
+    "id": "227:20350",
+    "name": "Blur/Glass",
+    "description": ""
+  }
+]

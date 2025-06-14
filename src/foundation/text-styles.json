@@ -1,0 +1,82 @@
+[
+  {
+    "id": "2104:22311",
+    "name": "Title Hero",
+    "description": ""
+  },
+  {
+    "id": "2104:22312",
+    "name": "Title Page",
+    "description": ""
+  },
+  {
+    "id": "66:14578",
+    "name": "Subtitle",
+    "description": ""
+  },
+  {
+    "id": "3613:22653",
+    "name": "Heading",
+    "description": ""
+  },
+  {
+    "id": "66:14577",
+    "name": "Subheading",
+    "description": ""
+  },
+  {
+    "id": "7782:32227",
+    "name": "Body Base",
+    "description": ""
+  },
+  {
+    "id": "66:14843",
+    "name": "Body Strong",
+    "description": ""
+  },
+  {
+    "id": "95:10985",
+    "name": "Body Emphasis",
+    "description": ""
+  },
+  {
+    "id": "89:14548",
+    "name": "Body Link",
+    "description": ""
+  },
+  {
+    "id": "66:14840",
+    "name": "Body Small",
+    "description": ""
+  },
+  {
+    "id": "514:10965",
+    "name": "Body Small Strong",
+    "description": ""
+  },
+  {
+    "id": "56:9001",
+    "name": "Single Line/Body Base",
+    "description": "Used for any text element where you need 100% line height. For example, an input field, a label."
+  },
+  {
+    "id": "56:8534",
+    "name": "Body Code",
+    "description": ""
+  },
+  {
+    "id": "715:11954",
+    "name": "Single Line/Body Small Strong",
+    "description": ""
+  },
+  {
+    "id": "7806:43490",
+    "name": ".Utilities/Component notes/Regular",
+    "description": ""
+  },
+  {
+    "id": "159:9829",
+    "name": ".Utilities/Component notes/Bold",
+    "description": ""
+  }
+]
