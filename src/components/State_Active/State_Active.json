@@ -1,0 +1,16 @@
+{
+  "id": "7768:19969",
+  "name": "State_Active",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9607843160629272,
+      "g": 0.9607843160629272,
+      "b": 0.9607843160629272,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

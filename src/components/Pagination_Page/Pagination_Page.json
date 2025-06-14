@@ -1,0 +1,33 @@
+{
+  "id": "9762:890",
+  "name": "Pagination_Page",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Default": {
+      "type": "string",
+      "description": "Default variant of Pagination Page"
+    },
+    "Hover": {
+      "type": "string",
+      "description": "Hover variant of Pagination Page"
+    },
+    "Current": {
+      "type": "string",
+      "description": "Current variant of Pagination Page"
+    },
+    "Current Hover": {
+      "type": "string",
+      "description": "Current Hover variant of Pagination Page"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

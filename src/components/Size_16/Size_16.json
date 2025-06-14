@@ -1,0 +1,14 @@
+{
+  "id": "68:15551",
+  "name": "Size_16",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    }
+  }
+}

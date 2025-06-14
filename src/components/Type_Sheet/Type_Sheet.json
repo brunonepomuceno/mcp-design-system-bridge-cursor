@@ -1,0 +1,22 @@
+{
+  "id": "228:12297",
+  "name": "Type_Sheet",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.8509804010391235,
+      "g": 0.8509804010391235,
+      "b": 0.8509804010391235,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "padding": "32px 32px 32px 32px"
+  }
+}

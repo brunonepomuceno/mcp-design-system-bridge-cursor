@@ -1,0 +1,22 @@
+{
+  "id": "4366:26794",
+  "name": "State_Hover_Active_Off",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9607843160629272,
+      "g": 0.9607843160629272,
+      "b": 0.9607843160629272,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.6961822509765625,
+      "g": 0.6961822509765625,
+      "b": 0.6961822509765625,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "padding": "4px 12px 4px 12px"
+  }
+}

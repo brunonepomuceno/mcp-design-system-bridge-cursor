@@ -1,0 +1,25 @@
+{
+  "id": "2153:7838",
+  "name": "Text_Content_Title",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Start": {
+      "type": "string",
+      "description": "Start variant of Text Content Title"
+    },
+    "Center": {
+      "type": "string",
+      "description": "Center variant of Text Content Title"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.1725490242242813,
+      "g": 0.1725490242242813,
+      "b": 0.1725490242242813,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8
+  }
+}

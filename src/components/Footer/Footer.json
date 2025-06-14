@@ -1,0 +1,25 @@
+{
+  "id": "321:11357",
+  "name": "Footer",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Footer"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Footer"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

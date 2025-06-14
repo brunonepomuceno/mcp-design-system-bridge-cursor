@@ -1,0 +1,16 @@
+{
+  "id": "56:8835",
+  "name": "Scheme_Danger_State_Default_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9252062439918518,
+      "g": 0.13374605774879456,
+      "b": 0.12033144384622574,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

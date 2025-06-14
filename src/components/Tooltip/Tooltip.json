@@ -1,0 +1,33 @@
+{
+  "id": "315:32700",
+  "name": "Tooltip",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Top": {
+      "type": "string",
+      "description": "Top variant of Tooltip"
+    },
+    "Bottom": {
+      "type": "string",
+      "description": "Bottom variant of Tooltip"
+    },
+    "Left": {
+      "type": "string",
+      "description": "Left variant of Tooltip"
+    },
+    "Right": {
+      "type": "string",
+      "description": "Right variant of Tooltip"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

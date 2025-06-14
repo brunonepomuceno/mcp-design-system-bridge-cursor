@@ -1,0 +1,25 @@
+{
+  "id": "185:852",
+  "name": "Button_Danger",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Primary, State": {
+      "type": "string",
+      "description": "Primary, State variant of Button Danger"
+    },
+    "Subtle, State": {
+      "type": "string",
+      "description": "Subtle, State variant of Button Danger"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "56:8837",
+  "name": "Scheme_Positive_State_Default_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.0784313753247261,
+      "g": 0.6823529601097107,
+      "b": 0.3607843220233917,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

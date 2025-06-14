@@ -1,0 +1,25 @@
+{
+  "id": "348:14983",
+  "name": "Card_Grid_Pricing",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Card Grid Pricing"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Card Grid Pricing"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "7768:19970",
+  "name": "Navigation_Pill",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Active": {
+      "type": "string",
+      "description": "Active variant of Navigation Pill"
+    },
+    "Default": {
+      "type": "string",
+      "description": "Default variant of Navigation Pill"
+    },
+    "Hover": {
+      "type": "string",
+      "description": "Hover variant of Navigation Pill"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

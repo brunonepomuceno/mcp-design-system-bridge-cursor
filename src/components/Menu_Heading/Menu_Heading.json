@@ -1,0 +1,10 @@
+{
+  "id": "9762:760",
+  "name": "Menu_Heading",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 8,
+    "padding": "8px 16px 4px 16px"
+  }
+}

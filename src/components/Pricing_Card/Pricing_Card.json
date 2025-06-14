@@ -1,0 +1,25 @@
+{
+  "id": "1444:11846",
+  "name": "Pricing_Card",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop, Variant": {
+      "type": "string",
+      "description": "Desktop, Variant variant of Pricing Card"
+    },
+    "Mobile, Variant": {
+      "type": "string",
+      "description": "Mobile, Variant variant of Pricing Card"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.5921568870544434,
+      "g": 0.27843138575553894,
+      "b": 1,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 5
+  }
+}

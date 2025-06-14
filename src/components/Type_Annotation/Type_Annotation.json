@@ -1,0 +1,22 @@
+{
+  "id": "348:20839",
+  "name": "Type_Annotation",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.8918150663375854,
+      "g": 0.8918150663375854,
+      "b": 0.8918150663375854,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.6961822509765625,
+      "g": 0.6961822509765625,
+      "b": 0.6961822509765625,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 16
+  }
+}

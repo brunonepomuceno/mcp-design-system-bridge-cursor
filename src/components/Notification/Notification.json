@@ -1,0 +1,25 @@
+{
+  "id": "124:8256",
+  "name": "Notification",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Message": {
+      "type": "string",
+      "description": "Message variant of Notification"
+    },
+    "Alert": {
+      "type": "string",
+      "description": "Alert variant of Notification"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

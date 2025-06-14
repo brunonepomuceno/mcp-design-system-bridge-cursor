@@ -1,0 +1,25 @@
+{
+  "id": "348:13470",
+  "name": "Panel_Image_Double",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Panel Image Double"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Panel Image Double"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

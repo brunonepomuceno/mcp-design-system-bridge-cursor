@@ -1,0 +1,25 @@
+{
+  "id": "348:15901",
+  "name": "Hero_Actions",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Hero Actions"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Hero Actions"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

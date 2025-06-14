@@ -1,0 +1,14 @@
+{
+  "id": "4039:11572",
+  "name": "Size_32",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "124:8257",
+  "name": "Variant_Alert",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.996067464351654,
+      "g": 0.911793053150177,
+      "b": 0.9060407280921936,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.9252062439918518,
+      "g": 0.13374605774879456,
+      "b": 0.12033144384622574,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8,
+    "padding": "16px 16px 16px 16px"
+  }
+}

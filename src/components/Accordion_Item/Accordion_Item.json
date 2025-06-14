@@ -1,0 +1,25 @@
+{
+  "id": "7753:4634",
+  "name": "Accordion_Item",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Open": {
+      "type": "string",
+      "description": "Open variant of Accordion Item"
+    },
+    "Closed": {
+      "type": "string",
+      "description": "Closed variant of Accordion Item"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

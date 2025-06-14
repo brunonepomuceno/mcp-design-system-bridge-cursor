@@ -1,0 +1,25 @@
+{
+  "id": "1443:10386",
+  "name": "Text_Price",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Large": {
+      "type": "string",
+      "description": "Large variant of Text Price"
+    },
+    "Small": {
+      "type": "string",
+      "description": "Small variant of Text Price"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.5921568870544434,
+      "g": 0.27843138575553894,
+      "b": 1,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 5
+  }
+}

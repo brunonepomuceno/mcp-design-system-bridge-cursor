@@ -1,0 +1,23 @@
+{
+  "id": "4185:3791",
+  "name": "Variant_Neutral_State_Default_Size_Medium",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.8918150663375854,
+      "g": 0.8918150663375854,
+      "b": 0.8918150663375854,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.4628731310367584,
+      "g": 0.4628731310367584,
+      "b": 0.4628731310367584,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8,
+    "padding": "12px 12px 12px 12px"
+  }
+}

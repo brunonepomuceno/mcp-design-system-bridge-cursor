@@ -1,0 +1,16 @@
+{
+  "id": "56:8887",
+  "name": "Scheme_Positive_State_Hover_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0,
+      "g": 0.6000000238418579,
+      "b": 0.3176470696926117,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

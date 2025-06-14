@@ -1,0 +1,25 @@
+{
+  "id": "9762:1103",
+  "name": "Avatar",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Initial, Size": {
+      "type": "string",
+      "description": "Initial, Size variant of Avatar"
+    },
+    "Image, Size": {
+      "type": "string",
+      "description": "Image, Size variant of Avatar"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

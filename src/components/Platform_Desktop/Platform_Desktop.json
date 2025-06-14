@@ -1,0 +1,14 @@
+{
+  "id": "175:4613",
+  "name": "Platform_Desktop",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    }
+  }
+}

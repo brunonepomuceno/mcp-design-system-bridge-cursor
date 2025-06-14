@@ -1,0 +1,29 @@
+{
+  "id": "515:5459",
+  "name": "Navigation_Button",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Default, Direction": {
+      "type": "string",
+      "description": "Default, Direction variant of Navigation Button"
+    },
+    "Hover, Direction": {
+      "type": "string",
+      "description": "Hover, Direction variant of Navigation Button"
+    },
+    "Active, Direction": {
+      "type": "string",
+      "description": "Active, Direction variant of Navigation Button"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

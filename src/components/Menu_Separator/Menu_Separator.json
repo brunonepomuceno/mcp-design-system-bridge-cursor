@@ -1,0 +1,10 @@
+{
+  "id": "9762:731",
+  "name": "Menu_Separator",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 8,
+    "padding": "8px 16px 8px 16px"
+  }
+}

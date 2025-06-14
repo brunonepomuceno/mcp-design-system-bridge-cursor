@@ -1,0 +1,33 @@
+{
+  "id": "4049:54746",
+  "name": "Component_Annotation",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Right, Type": {
+      "type": "string",
+      "description": "Right, Type variant of _Component Annotation"
+    },
+    "Top, Type": {
+      "type": "string",
+      "description": "Top, Type variant of _Component Annotation"
+    },
+    "Bottom, Type": {
+      "type": "string",
+      "description": "Bottom, Type variant of _Component Annotation"
+    },
+    "Left, Type": {
+      "type": "string",
+      "description": "Left, Type variant of _Component Annotation"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

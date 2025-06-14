@@ -1,0 +1,16 @@
+{
+  "id": "3729:12961",
+  "name": "State_Default_Active_On",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "padding": "4px 12px 4px 12px"
+  }
+}

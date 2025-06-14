@@ -1,0 +1,16 @@
+{
+  "id": "56:9870",
+  "name": "Scheme_Neutral_State_Hover_Variant_Secondary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9019607901573181,
+      "g": 0.9019607901573181,
+      "b": 0.9019607901573181,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

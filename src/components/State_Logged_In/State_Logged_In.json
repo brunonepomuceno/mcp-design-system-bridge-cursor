@@ -1,0 +1,10 @@
+{
+  "id": "18:9387",
+  "name": "State_Logged_In",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 8,
+    "padding": "8px 12px 8px 12px"
+  }
+}

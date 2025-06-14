@@ -1,0 +1,25 @@
+{
+  "id": "56:15608",
+  "name": "Avatar_Group",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Overlap": {
+      "type": "string",
+      "description": "Overlap variant of Avatar Group"
+    },
+    "Spaced": {
+      "type": "string",
+      "description": "Spaced variant of Avatar Group"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

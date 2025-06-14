@@ -61,6 +61,57 @@ export interface FigmaEffectStyle {
   };
 }
 
+export interface FigmaColor {
+  name: string;
+  value: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  };
+}
+
+export interface FigmaTypography {
+  name: string;
+  value: {
+    fontFamily: string;
+    fontSize: number;
+    fontWeight: number;
+    lineHeight: number;
+    letterSpacing: number;
+  };
+}
+
+export interface FigmaSpacing {
+  name: string;
+  value: number;
+}
+
+export interface FigmaElevation {
+  name: string;
+  value: {
+    x: number;
+    y: number;
+    blur: number;
+    spread: number;
+    color: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    };
+  };
+}
+
+export interface FigmaMotion {
+  name: string;
+  value: {
+    duration: number;
+    easing: string;
+    delay: number;
+  };
+}
+
 export class FigmaService {
   private config: FigmaConfig;
 
@@ -230,5 +281,85 @@ export class FigmaService {
 
     traverse(data.document);
     return effectStyles;
+  }
+
+  public async extractColors(): Promise<FigmaColor[]> {
+    const data = await this.makeRequest(`files/${this.config.fileKey}/styles`);
+    const colors: FigmaColor[] = [];
+
+    data.meta.styles.forEach((style: any) => {
+      if (style.styleType === 'FILL') {
+        colors.push({
+          name: style.name,
+          value: style.description,
+        });
+      }
+    });
+
+    return colors;
+  }
+
+  public async extractTypography(): Promise<FigmaTypography[]> {
+    const data = await this.makeRequest(`files/${this.config.fileKey}/styles`);
+    const typography: FigmaTypography[] = [];
+
+    data.meta.styles.forEach((style: any) => {
+      if (style.styleType === 'TEXT') {
+        typography.push({
+          name: style.name,
+          value: style.description,
+        });
+      }
+    });
+
+    return typography;
+  }
+
+  public async extractSpacing(): Promise<FigmaSpacing[]> {
+    const data = await this.makeRequest(`files/${this.config.fileKey}/styles`);
+    const spacing: FigmaSpacing[] = [];
+
+    data.meta.styles.forEach((style: any) => {
+      if (style.styleType === 'GRID') {
+        spacing.push({
+          name: style.name,
+          value: style.description,
+        });
+      }
+    });
+
+    return spacing;
+  }
+
+  public async extractElevation(): Promise<FigmaElevation[]> {
+    const data = await this.makeRequest(`files/${this.config.fileKey}/styles`);
+    const elevation: FigmaElevation[] = [];
+
+    data.meta.styles.forEach((style: any) => {
+      if (style.styleType === 'EFFECT') {
+        elevation.push({
+          name: style.name,
+          value: style.description,
+        });
+      }
+    });
+
+    return elevation;
+  }
+
+  public async extractMotion(): Promise<FigmaMotion[]> {
+    const data = await this.makeRequest(`files/${this.config.fileKey}/styles`);
+    const motion: FigmaMotion[] = [];
+
+    data.meta.styles.forEach((style: any) => {
+      if (style.styleType === 'MOTION') {
+        motion.push({
+          name: style.name,
+          value: style.description,
+        });
+      }
+    });
+
+    return motion;
   }
 }

@@ -1,0 +1,16 @@
+{
+  "id": "157:10317",
+  "name": "State_On",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.1725490242242813,
+      "g": 0.1725490242242813,
+      "b": 0.1725490242242813,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

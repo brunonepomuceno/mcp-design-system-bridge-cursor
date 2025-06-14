@@ -1,0 +1,25 @@
+{
+  "id": "348:13407",
+  "name": "Card_Grid_Content_List",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Card Grid Content List"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Card Grid Content List"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

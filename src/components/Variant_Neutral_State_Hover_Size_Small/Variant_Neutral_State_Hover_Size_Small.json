@@ -1,0 +1,23 @@
+{
+  "id": "4185:3831",
+  "name": "Variant_Neutral_State_Hover_Size_Small",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.803513765335083,
+      "g": 0.803513765335083,
+      "b": 0.803513765335083,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.4628731310367584,
+      "g": 0.4628731310367584,
+      "b": 0.4628731310367584,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

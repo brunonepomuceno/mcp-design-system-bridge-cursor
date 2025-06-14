@@ -1,0 +1,42 @@
+{
+  "id": "4039:13179",
+  "name": "Cloud",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "16": {
+      "type": "string",
+      "description": "16 variant of Cloud"
+    },
+    "20": {
+      "type": "string",
+      "description": "20 variant of Cloud"
+    },
+    "24": {
+      "type": "string",
+      "description": "24 variant of Cloud"
+    },
+    "32": {
+      "type": "string",
+      "description": "32 variant of Cloud"
+    },
+    "40": {
+      "type": "string",
+      "description": "40 variant of Cloud"
+    },
+    "48": {
+      "type": "string",
+      "description": "48 variant of Cloud"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.1725490242242813,
+      "g": 0.1725490242242813,
+      "b": 0.1725490242242813,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 5,
+    "padding": "20px 20px 20px 20px"
+  }
+}

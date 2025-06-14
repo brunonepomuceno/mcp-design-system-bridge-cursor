@@ -1,0 +1,14 @@
+{
+  "id": "562:8312",
+  "name": "Platform_Mobile",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    }
+  }
+}

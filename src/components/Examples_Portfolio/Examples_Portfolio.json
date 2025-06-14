@@ -1,0 +1,25 @@
+{
+  "id": "562:11665",
+  "name": "Examples_Portfolio",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Examples/Portfolio"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Examples/Portfolio"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.5921568870544434,
+      "g": 0.27843138575553894,
+      "b": 1,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 5
+  }
+}

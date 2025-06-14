@@ -1,0 +1,23 @@
+{
+  "id": "56:11759",
+  "name": "Variant_Message",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.4588235318660736,
+      "g": 0.4588235318660736,
+      "b": 0.4588235318660736,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8,
+    "padding": "16px 16px 16px 16px"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "3729:12962",
+  "name": "State_Default_Active_Off",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderColor": {
+      "r": 0.6961822509765625,
+      "g": 0.6961822509765625,
+      "b": 0.6961822509765625,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "padding": "4px 12px 4px 12px"
+  }
+}

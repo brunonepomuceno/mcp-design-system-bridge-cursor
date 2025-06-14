@@ -1,0 +1,23 @@
+{
+  "id": "4185:3811",
+  "name": "Variant_Subtle_State_Disabled_Size_Medium",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.8509804010391235,
+      "g": 0.8509804010391235,
+      "b": 0.8509804010391235,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.7019608020782471,
+      "g": 0.7019608020782471,
+      "b": 0.7019608020782471,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8,
+    "padding": "12px 12px 12px 12px"
+  }
+}

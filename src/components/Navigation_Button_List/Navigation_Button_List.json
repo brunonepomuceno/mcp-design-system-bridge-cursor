@@ -1,0 +1,25 @@
+{
+  "id": "524:503",
+  "name": "Navigation_Button_List",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Row": {
+      "type": "string",
+      "description": "Row variant of Navigation Button List"
+    },
+    "Column": {
+      "type": "string",
+      "description": "Column variant of Navigation Button List"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "315:32848",
+  "name": "Direction_Bottom_Type_Group",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 9999
+  }
+}

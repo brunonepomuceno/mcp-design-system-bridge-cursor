@@ -1,0 +1,15 @@
+{
+  "id": "9762:1104",
+  "name": "Type_Initial_Size_Large_Shape_Circle",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.1725490242242813,
+      "g": 0.1725490242242813,
+      "b": 0.1725490242242813,
+      "a": 1
+    },
+    "borderRadius": 9999
+  }
+}

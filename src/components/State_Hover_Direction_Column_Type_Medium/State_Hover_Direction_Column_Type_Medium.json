@@ -1,0 +1,15 @@
+{
+  "id": "515:8824",
+  "name": "State_Hover_Direction_Column_Type_Medium",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9607843160629272,
+      "g": 0.9607843160629272,
+      "b": 0.9607843160629272,
+      "a": 1
+    },
+    "padding": "8px 8px 8px 8px"
+  }
+}

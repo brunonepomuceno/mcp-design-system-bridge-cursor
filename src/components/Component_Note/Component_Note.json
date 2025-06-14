@@ -1,0 +1,25 @@
+{
+  "id": "348:20838",
+  "name": "Component_Note",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Documentation": {
+      "type": "string",
+      "description": "Documentation variant of _Component Note"
+    },
+    "Annotation": {
+      "type": "string",
+      "description": "Annotation variant of _Component Note"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

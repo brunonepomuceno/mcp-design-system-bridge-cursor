@@ -1,0 +1,25 @@
+{
+  "id": "562:10260",
+  "name": "Examples_Article",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Examples/Article"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Examples/Article"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.5921568870544434,
+      "g": 0.27843138575553894,
+      "b": 1,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 5
+  }
+}

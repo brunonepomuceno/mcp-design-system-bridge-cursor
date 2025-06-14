@@ -1,0 +1,16 @@
+{
+  "id": "56:8890",
+  "name": "Scheme_Warning_State_Hover_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.8999999761581421,
+      "g": 0.6284915804862976,
+      "b": 0,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

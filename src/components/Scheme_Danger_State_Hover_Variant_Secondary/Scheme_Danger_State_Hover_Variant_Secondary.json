@@ -1,0 +1,16 @@
+{
+  "id": "56:9882",
+  "name": "Scheme_Danger_State_Hover_Variant_Secondary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.988709032535553,
+      "g": 0.7016782760620117,
+      "b": 0.6785163283348083,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

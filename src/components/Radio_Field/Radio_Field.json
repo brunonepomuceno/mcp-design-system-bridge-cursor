@@ -1,0 +1,25 @@
+{
+  "id": "9762:1412",
+  "name": "Radio_Field",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Default, Value Type": {
+      "type": "string",
+      "description": "Default, Value Type variant of Radio Field"
+    },
+    "Disabled, Value Type": {
+      "type": "string",
+      "description": "Disabled, Value Type variant of Radio Field"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

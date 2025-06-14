@@ -1,0 +1,16 @@
+{
+  "id": "87:18877",
+  "name": "State_Logged_In_Hover",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9607843160629272,
+      "g": 0.9607843160629272,
+      "b": 0.9607843160629272,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 12px 8px 12px"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "9762:739",
+  "name": "Menu_Shortcut",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 8
+  }
+}

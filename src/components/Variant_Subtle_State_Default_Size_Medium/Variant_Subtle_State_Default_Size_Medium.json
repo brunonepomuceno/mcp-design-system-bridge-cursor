@@ -1,0 +1,10 @@
+{
+  "id": "4185:3803",
+  "name": "Variant_Subtle_State_Default_Size_Medium",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 8,
+    "padding": "12px 12px 12px 12px"
+  }
+}

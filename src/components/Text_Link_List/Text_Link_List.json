@@ -1,0 +1,25 @@
+{
+  "id": "322:9321",
+  "name": "Text_Link_List",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Default": {
+      "type": "string",
+      "description": "Default variant of Text Link List"
+    },
+    "Tight": {
+      "type": "string",
+      "description": "Tight variant of Text Link List"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.5921568870544434,
+      "g": 0.27843138575553894,
+      "b": 1,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 5
+  }
+}

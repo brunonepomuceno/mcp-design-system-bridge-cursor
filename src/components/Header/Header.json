@@ -1,0 +1,25 @@
+{
+  "id": "2287:22651",
+  "name": "Header",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop, State": {
+      "type": "string",
+      "description": "Desktop, State variant of Header"
+    },
+    "Mobile, State": {
+      "type": "string",
+      "description": "Mobile, State variant of Header"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "9762:1426",
+  "name": "Checkbox_Group",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    }
+  }
+}

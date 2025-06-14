@@ -1,0 +1,16 @@
+{
+  "id": "56:8881",
+  "name": "Scheme_Brand_State_Hover_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.11764705926179886,
+      "g": 0.11764705926179886,
+      "b": 0.11764705926179886,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

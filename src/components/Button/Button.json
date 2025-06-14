@@ -1,0 +1,29 @@
+{
+  "id": "4185:3778",
+  "name": "Button",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Primary, State": {
+      "type": "string",
+      "description": "Primary, State variant of Button"
+    },
+    "Neutral, State": {
+      "type": "string",
+      "description": "Neutral, State variant of Button"
+    },
+    "Subtle, State": {
+      "type": "string",
+      "description": "Subtle, State variant of Button"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

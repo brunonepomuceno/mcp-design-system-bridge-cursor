@@ -1,0 +1,22 @@
+{
+  "id": "2299:23639",
+  "name": "Platform_Mobile_State_Default",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.8509804010391235,
+      "g": 0.8509804010391235,
+      "b": 0.8509804010391235,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "padding": "24px 24px 24px 24px"
+  }
+}

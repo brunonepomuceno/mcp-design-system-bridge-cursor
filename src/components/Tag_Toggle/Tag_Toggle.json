@@ -1,0 +1,25 @@
+{
+  "id": "157:10316",
+  "name": "Tag_Toggle",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "On": {
+      "type": "string",
+      "description": "On variant of Tag Toggle"
+    },
+    "Off": {
+      "type": "string",
+      "description": "Off variant of Tag Toggle"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

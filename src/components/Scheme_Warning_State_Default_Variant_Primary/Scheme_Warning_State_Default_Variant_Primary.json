@@ -1,0 +1,16 @@
+{
+  "id": "56:8839",
+  "name": "Scheme_Warning_State_Default_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.9098039269447327,
+      "g": 0.7254902124404907,
+      "b": 0.1921568661928177,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

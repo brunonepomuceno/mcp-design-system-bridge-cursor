@@ -1,0 +1,15 @@
+{
+  "id": "9762:1115",
+  "name": "Type_Image_Size_Medium_Shape_Circle",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "borderRadius": 9999
+  }
+}

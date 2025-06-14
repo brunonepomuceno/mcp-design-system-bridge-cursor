@@ -1,0 +1,37 @@
+{
+  "id": "2072:9432",
+  "name": "Button_Group",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Start": {
+      "type": "string",
+      "description": "Start variant of Button Group"
+    },
+    "End": {
+      "type": "string",
+      "description": "End variant of Button Group"
+    },
+    "Center": {
+      "type": "string",
+      "description": "Center variant of Button Group"
+    },
+    "Justify": {
+      "type": "string",
+      "description": "Justify variant of Button Group"
+    },
+    "Stack": {
+      "type": "string",
+      "description": "Stack variant of Button Group"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

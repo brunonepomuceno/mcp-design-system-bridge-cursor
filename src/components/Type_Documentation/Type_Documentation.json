@@ -1,0 +1,22 @@
+{
+  "id": "159:9830",
+  "name": "Type_Documentation",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 1,
+      "g": 0.9450980424880981,
+      "b": 0.7607843279838562,
+      "a": 1
+    },
+    "borderColor": {
+      "r": 0.3234952688217163,
+      "g": 0.14441744983196259,
+      "b": 0.016504719853401184,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 16
+  }
+}

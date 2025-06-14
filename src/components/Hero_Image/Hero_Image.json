@@ -1,0 +1,25 @@
+{
+  "id": "348:15970",
+  "name": "Hero_Image",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Hero Image"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Hero Image"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

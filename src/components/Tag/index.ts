@@ -1,0 +1,3 @@
+// Generated from Figma
+export { Tag } from './Tag';
+export type { TagProps } from './Tag.types';

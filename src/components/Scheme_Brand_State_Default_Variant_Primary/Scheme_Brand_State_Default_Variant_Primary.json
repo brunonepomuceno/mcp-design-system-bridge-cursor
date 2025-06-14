@@ -1,0 +1,16 @@
+{
+  "id": "56:8833",
+  "name": "Scheme_Brand_State_Default_Variant_Primary",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "backgroundColor": {
+      "r": 0.1725490242242813,
+      "g": 0.1725490242242813,
+      "b": 0.1725490242242813,
+      "a": 1
+    },
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

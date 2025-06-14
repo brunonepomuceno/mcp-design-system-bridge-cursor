@@ -1,0 +1,25 @@
+{
+  "id": "589:17676",
+  "name": "Slider_Field",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Default": {
+      "type": "string",
+      "description": "Default variant of Slider Field"
+    },
+    "Disabled": {
+      "type": "string",
+      "description": "Disabled variant of Slider Field"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

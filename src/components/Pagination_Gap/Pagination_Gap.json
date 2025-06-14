@@ -1,0 +1,10 @@
+{
+  "id": "9762:868",
+  "name": "Pagination_Gap",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderRadius": 8,
+    "padding": "8px 16px 8px 16px"
+  }
+}

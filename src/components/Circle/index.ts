@@ -1,0 +1,3 @@
+// Generated from Figma
+export { Circle } from './Circle';
+export type { CircleProps } from './Circle.types';

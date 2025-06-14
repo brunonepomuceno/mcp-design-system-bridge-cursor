@@ -1,0 +1,25 @@
+{
+  "id": "3729:12963",
+  "name": "Tab",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Default, Active": {
+      "type": "string",
+      "description": "Default, Active variant of Tab"
+    },
+    "Hover, Active": {
+      "type": "string",
+      "description": "Hover, Active variant of Tab"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

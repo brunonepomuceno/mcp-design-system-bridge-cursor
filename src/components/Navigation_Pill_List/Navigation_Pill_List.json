@@ -1,0 +1,25 @@
+{
+  "id": "2194:14984",
+  "name": "Navigation_Pill_List",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Row": {
+      "type": "string",
+      "description": "Row variant of Navigation Pill List"
+    },
+    "Column": {
+      "type": "string",
+      "description": "Column variant of Navigation Pill List"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "348:15147",
+  "name": "Page_Product",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Page Product"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Page Product"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

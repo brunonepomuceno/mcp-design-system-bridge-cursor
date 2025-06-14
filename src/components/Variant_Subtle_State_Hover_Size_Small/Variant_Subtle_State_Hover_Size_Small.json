@@ -1,0 +1,17 @@
+{
+  "id": "4185:3843",
+  "name": "Variant_Subtle_State_Hover_Size_Small",
+  "type": "COMPONENT",
+  "properties": {},
+  "styles": {
+    "borderColor": {
+      "r": 0.8509804010391235,
+      "g": 0.8509804010391235,
+      "b": 0.8509804010391235,
+      "a": 1
+    },
+    "borderWidth": 1,
+    "borderRadius": 8,
+    "padding": "8px 8px 8px 8px"
+  }
+}

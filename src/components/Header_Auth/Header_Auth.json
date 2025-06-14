@@ -1,0 +1,29 @@
+{
+  "id": "18:9389",
+  "name": "Header_Auth",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Logged Out": {
+      "type": "string",
+      "description": "Logged Out variant of Header Auth"
+    },
+    "Logged In": {
+      "type": "string",
+      "description": "Logged In variant of Header Auth"
+    },
+    "Logged In - Hover": {
+      "type": "string",
+      "description": "Logged In - Hover variant of Header Auth"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}

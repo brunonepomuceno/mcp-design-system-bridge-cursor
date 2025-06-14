@@ -1,0 +1,25 @@
+{
+  "id": "348:15101",
+  "name": "Panel_Image_Content_Reverse",
+  "type": "COMPONENT_SET",
+  "properties": {
+    "Desktop": {
+      "type": "string",
+      "description": "Desktop variant of Panel Image Content Reverse"
+    },
+    "Mobile": {
+      "type": "string",
+      "description": "Mobile variant of Panel Image Content Reverse"
+    }
+  },
+  "styles": {
+    "borderColor": {
+      "r": 0.18869711458683014,
+      "g": 0.18869711458683014,
+      "b": 0.18869711458683014,
+      "a": 1
+    },
+    "borderWidth": 2,
+    "borderRadius": 8
+  }
+}
