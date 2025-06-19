@@ -5,7 +5,7 @@ figma.showUI(__html__, { width: 320, height: 400 });
 // Interfaces
 interface ButtonData {
   name: string;
-  description: string;
+  label?: string;
   properties: Record<string, any>;
   styles: {
     backgroundColor?: string;
@@ -90,27 +90,59 @@ async function createButtonInFigma(buttonData: ButtonData) {
 
     // Criar título
     const titleText = figma.createText();
-    titleText.characters = buttonData.name;
     titleText.name = "Button Title";
-    titleText.fontName = fontName;
+    titleText.fontName = fontName; // Setar fontName antes de carregar
+    console.log("[MCP][DIAG] fontName a ser carregada:", fontName);
+    try {
+      const availableFonts = await figma.listAvailableFontsAsync();
+      console.log(
+        "[MCP][DIAG] Fontes disponíveis:",
+        availableFonts.map((f) => f.fontName)
+      );
+    } catch (e) {
+      console.error("[MCP][DIAG] Erro ao listar fontes disponíveis:", e);
+    }
+    try {
+      await figma.loadFontAsync(fontName);
+      console.log("[MCP][DIAG] Fonte carregada com sucesso:", fontName);
+    } catch (e) {
+      console.error("[MCP][DIAG] Erro ao carregar fonte:", fontName, e);
+    }
     titleText.fontSize = 20;
     titleText.x = 20;
     titleText.y = 20;
     titleText.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
+    // Garantir que label nunca seja undefined ou vazio
+    let safeLabel = buttonData.label;
+    if (
+      !safeLabel ||
+      typeof safeLabel !== "string" ||
+      safeLabel.trim() === ""
+    ) {
+      console.error(
+        "[MCP] label do botão está vazio ou indefinido! Usando fallback 'Button'. Dados recebidos:",
+        buttonData
+      );
+      safeLabel = "Button";
+    }
+    console.log("[MCP][DIAG] Valor de characters a ser setado:", safeLabel);
+    try {
+      titleText.characters = safeLabel;
+      console.log(
+        "[MCP][DIAG] characters setado com sucesso:",
+        titleText.characters
+      );
+    } catch (e) {
+      console.error("[MCP][DIAG] Erro ao setar characters:", safeLabel, e);
+    }
     frame.appendChild(titleText);
-
-    // Criar descrição
-    const descriptionText = figma.createText();
-    descriptionText.characters = buttonData.description;
-    descriptionText.name = "Button Description";
-    descriptionText.fontName = fontName;
-    descriptionText.fontSize = 14;
-    descriptionText.x = 20;
-    descriptionText.y = 50;
-    descriptionText.fills = [
-      { type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } },
-    ];
-    frame.appendChild(descriptionText);
+    // Log para garantir separação
+    console.log(
+      "[MCP] frame.name:",
+      frame.name,
+      "titleText.characters:",
+      titleText.characters
+    );
 
     // Criar informações das props
     const propsText = figma.createText();
@@ -183,18 +215,21 @@ async function updateButtonJson(frame: FrameNode) {
         : (currentButtonData.styles && currentButtonData.styles.borderColor) ||
           "#000000";
 
-    // Extrair o texto do botão
-    const textNodes = frame.findAll(
-      (node) => node.type === "TEXT"
-    ) as TextNode[];
-    let buttonText = "";
-    if (
-      textNodes.length > 0 &&
-      textNodes[0] &&
-      typeof textNodes[0].characters === "string"
-    ) {
-      buttonText = textNodes[0].characters;
+    // Extrair o texto do botão (label)
+    const titleNode = frame.findOne((node) => node.name === "Button Title") as
+      | TextNode
+      | undefined;
+    let buttonLabel = "";
+    if (titleNode && typeof titleNode.characters === "string") {
+      buttonLabel = titleNode.characters;
     }
+    // Log para garantir separação
+    console.log(
+      "[MCP][updateButtonJson] frame.name extraído:",
+      frame.name,
+      "label extraído:",
+      buttonLabel
+    );
 
     // Extrair as propriedades de fonte
     let fontSize = "14px";
@@ -203,17 +238,13 @@ async function updateButtonJson(frame: FrameNode) {
     let color =
       (currentButtonData.styles && currentButtonData.styles.color) || "#000000";
 
-    if (textNodes.length > 0 && textNodes[0]) {
-      if (textNodes[0].fontSize) {
-        fontSize = String(textNodes[0].fontSize) + "px";
+    if (titleNode) {
+      if (titleNode.fontSize) {
+        fontSize = String(titleNode.fontSize) + "px";
       }
-      if (textNodes[0].fontWeight) {
-        fontWeight = String(textNodes[0].fontWeight);
-      }
-      if (textNodes[0].fontName) {
-        const fontName = textNodes[0].fontName as FontName;
+      if (titleNode.fontName) {
+        const fontName = titleNode.fontName as FontName;
         try {
-          // Tentar carregar a fonte antes de usá-la
           await figma.loadFontAsync(fontName);
           fontFamily = fontName.family;
         } catch (error) {
@@ -222,7 +253,6 @@ async function updateButtonJson(frame: FrameNode) {
             fontName.family,
             "usando fallback"
           );
-          // Se falhar, usar a fonte do sistema
           const availableFonts = await figma.listAvailableFontsAsync();
           const systemFont = availableFonts.find(
             (f) => !f.fontName.family.startsWith(".")
@@ -233,8 +263,8 @@ async function updateButtonJson(frame: FrameNode) {
           }
         }
       }
-      if (textNodes[0].fills) {
-        const textFills = textNodes[0].fills as readonly Paint[];
+      if (titleNode.fills) {
+        const textFills = titleNode.fills as readonly Paint[];
         if (textFills[0] && textFills[0].type === "SOLID") {
           color = `#${Math.round(textFills[0].color.r * 255)
             .toString(16)
@@ -249,7 +279,8 @@ async function updateButtonJson(frame: FrameNode) {
 
     // Criar um novo objeto com os dados atualizados, mantendo os dados existentes
     const updatedButtonData = Object.assign({}, currentButtonData, {
-      description: buttonText || currentButtonData.description,
+      name: frame.name,
+      label: buttonLabel,
       styles: Object.assign({}, currentButtonData.styles, {
         backgroundColor,
         borderRadius: `${String(frame.cornerRadius)}px`,
@@ -373,75 +404,51 @@ async function applyCodeChangesToFigma(
   if (buttonData.name) {
     frame.name = buttonData.name;
     console.log("[MCP Debug] frame.name AFTER update:", frame.name);
+  }
 
-    // Atualizar o título do botão
-    const titleText = frame.findOne(
-      (node) => node.name === "Button Title"
-    ) as TextNode;
-    console.log("[MCP Debug] Found titleText by name:", titleText);
-    if (titleText) {
-      console.log(
-        "[MCP Debug] titleText characters BEFORE update:",
-        titleText.characters
+  // Atualizar o título do botão
+  const titleText = frame.findOne(
+    (node) => node.name === "Button Title"
+  ) as TextNode;
+  console.log("[MCP Debug] Found titleText by name:", titleText);
+  if (titleText) {
+    console.log(
+      "[MCP Debug] titleText characters BEFORE update:",
+      titleText.characters
+    );
+    await figma.loadFontAsync(titleText.fontName as FontName);
+    // Garantir que label nunca seja undefined ou vazio
+    let safeLabel = buttonData.label;
+    if (
+      !safeLabel ||
+      typeof safeLabel !== "string" ||
+      safeLabel.trim() === ""
+    ) {
+      console.error(
+        "[MCP] label do botão está vazio ou indefinido na atualização! Usando fallback 'Button'. Dados recebidos:",
+        buttonData
       );
-      await figma.loadFontAsync(titleText.fontName as FontName);
-      titleText.characters = buttonData.name;
+      safeLabel = "Button";
+    }
+    if (titleText.characters !== safeLabel) {
+      titleText.characters = safeLabel;
       console.log(
         "[MCP Debug] titleText characters AFTER update:",
         titleText.characters
       );
     } else {
-      console.log(
-        '[MCP Debug] Title text node (named "Button Title") NOT FOUND!'
-      );
+      console.log("[MCP Debug] label já está sincronizado, não atualizando.");
     }
-  } else {
+    // Log para garantir separação
     console.log(
-      "[MCP Debug] buttonData.name is undefined or empty. Skipping frame name and title text update."
-    );
-  }
-
-  // Atualizar descrição
-  const descriptionText = frame.findOne(
-    (node) => node.name === "Button Description"
-  ) as TextNode;
-  console.log("[MCP Debug] Found descriptionText by name:", descriptionText);
-  if (descriptionText && buttonData.description) {
-    console.log(
-      "[MCP Debug] descriptionText characters BEFORE update:",
-      descriptionText.characters
-    );
-    await figma.loadFontAsync(descriptionText.fontName as FontName);
-    descriptionText.characters = buttonData.description;
-    console.log(
-      "[MCP Debug] descriptionText characters AFTER update:",
-      descriptionText.characters
+      "[MCP Debug] frame.name:",
+      frame.name,
+      "titleText.characters:",
+      titleText.characters
     );
   } else {
     console.log(
-      '[MCP Debug] Description text node (named "Button Description") NOT FOUND, or buttonData.description is undefined/empty.'
-    );
-  }
-
-  // Atualizar informações das props
-  const propsText = frame.findOne(
-    (node) => node.name === "Button Properties"
-  ) as TextNode;
-  console.log("[MCP Debug] Found propsText by name:", propsText);
-  if (propsText && buttonData.properties) {
-    console.log(
-      "[MCP Debug] propsText characters BEFORE update:",
-      propsText.characters
-    );
-    await figma.loadFontAsync(propsText.fontName as FontName);
-    propsText.characters = `${Object.keys(buttonData.properties).length} propriedades`;
-    console.log(
-      "[MCP Debug] propsText characters AFTER update:",
-      propsText.characters
-    );
-  } else {
-    console.log(
-      '[MCP Debug] Properties text node (named "Button Properties") NOT FOUND, or buttonData.properties is undefined/empty.'
+      '[MCP Debug] Title text node (named "Button Title") NOT FOUND!'
     );
   }
 
@@ -575,14 +582,35 @@ figma.ui.onmessage = async (msg) => {
       // Criar o botão no Figma
       const frame = await createButtonInFigma(buttonData);
 
-      // Adicionar listener para mudanças no frame
+      // Adicionar listener para mudanças no frame e no texto do botão
       frame.setPluginData("isButton", "true");
+      const titleText = frame.findOne((node) => node.name === "Button Title");
       figma.on("documentchange", (event) => {
         const changedNodes = event.documentChanges.filter(
           (change) =>
-            change.type === "PROPERTY_CHANGE" && change.node.id === frame.id
+            change.type === "PROPERTY_CHANGE" &&
+            (change.node.id === frame.id ||
+              (titleText && change.node.id === titleText.id))
         );
         if (changedNodes.length > 0) {
+          // Corrigir logs para evitar erros de linter
+          const changedNodesLog = changedNodes.map((c) => {
+            const id = (c as any).node?.id || "unknown";
+            const properties = (c as any).properties || {};
+            return { id, properties };
+          });
+          let titleTextValue = undefined;
+          if (titleText && "characters" in titleText) {
+            titleTextValue = (titleText as TextNode).characters;
+          }
+          console.log(
+            "[MCP] documentchange disparado. changedNodes:",
+            changedNodesLog,
+            "frame.name:",
+            frame.name,
+            "titleText:",
+            titleTextValue
+          );
           updateButtonJson(frame);
         }
       });

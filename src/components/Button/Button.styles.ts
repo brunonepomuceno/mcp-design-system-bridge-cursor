@@ -1,13 +1,13 @@
 // Gerado automaticamente a partir do Button.json
 export const buttonStyles = {
-  backgroundColor: '#f2f2f2',
+  backgroundColor: '#ff0000',
   borderRadius: '8px',
   borderWidth: '1px',
   borderColor: '#000000',
   borderStyle: 'solid',
   padding: '20px 20px 20px 20px',
   fontSize: '20px',
-  fontWeight: '400',
+  fontWeight: 'normal',
   color: '#333333',
   textAlign: 'center',
   cursor: 'pointer',
