@@ -2,7 +2,7 @@
   "name": "button-primary",
   "label": "botão",
   "styles": {
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#ff00ff",
     "borderRadius": "8px",
     "borderWidth": "1px",
     "borderColor": "#000000",

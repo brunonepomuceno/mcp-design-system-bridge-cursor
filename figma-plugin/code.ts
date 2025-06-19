@@ -60,12 +60,23 @@ async function createButtonInFigma(buttonData: ButtonData) {
     }
     const frame = figma.createFrame();
     frame.name = buttonData.name;
-    frame.resize(300, 120); // Aumentado para acomodar mais informações
     frame.x = 0;
     frame.y = 0;
     frame.fills = [{ type: "SOLID", color: initialBg }]; // Fundo já com a cor do button.json se existir
     frame.cornerRadius = 8;
     console.log("[MCP] Frame criado");
+
+    // Auto-layout horizontal e hug contents
+    frame.layoutMode = "HORIZONTAL";
+    frame.primaryAxisSizingMode = "AUTO"; // Hug contents na horizontal
+    frame.counterAxisSizingMode = "AUTO"; // Hug contents na vertical
+    frame.primaryAxisAlignItems = "MIN";
+    frame.counterAxisAlignItems = "MIN";
+    frame.paddingLeft = 20;
+    frame.paddingRight = 20;
+    frame.paddingTop = 20;
+    frame.paddingBottom = 20;
+    frame.itemSpacing = 10;
 
     // Tentar carregar a fonte Inter
     let fontName = { family: "Inter", style: "Regular" };
@@ -143,16 +154,6 @@ async function createButtonInFigma(buttonData: ButtonData) {
       "titleText.characters:",
       titleText.characters
     );
-
-    // Adicionar auto-layout
-    frame.layoutMode = "VERTICAL";
-    frame.primaryAxisAlignItems = "MIN";
-    frame.counterAxisAlignItems = "MIN";
-    frame.paddingLeft = 20;
-    frame.paddingRight = 20;
-    frame.paddingTop = 20;
-    frame.paddingBottom = 20;
-    frame.itemSpacing = 10;
 
     // Centralizar o frame na viewport
     figma.viewport.scrollAndZoomIntoView([frame]);

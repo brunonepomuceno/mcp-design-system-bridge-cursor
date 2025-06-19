@@ -1,6 +1,6 @@
 // Gerado automaticamente a partir do Button.json
 export const buttonStyles = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#ff00ff',
   borderRadius: '8px',
   borderWidth: '1px',
   borderColor: '#000000',
