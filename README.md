@@ -23,12 +23,14 @@ Este projeto é uma ponte entre o Design System MCP e o Figma, permitindo a sinc
 ## Instalação
 
 1. Clone o repositório:
+
 ```bash
 git clone [URL_DO_REPOSITÓRIO]
 cd mcp-design-system-bridge
 ```
 
 2. Instale as dependências:
+
 ```bash
 npm install
 ```
@@ -85,4 +87,16 @@ O arquivo `Button.json` define as propriedades do componente Button:
 
 ## Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes. 
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## Building the Figma Plugin
+
+Whenever you make changes to the plugin TypeScript code (for example, in `figma-plugin/code.ts`), you must run the TypeScript build to generate the updated JavaScript file that Figma will execute. To do this, run:
+
+```
+npx tsc --project tsconfig.json
+```
+
+This will compile your TypeScript files and update the corresponding JavaScript files in the output directory. Only after this step will your changes take effect in Figma.
+
+If you only change the `button.json` or other data files, you do **not** need to rebuild the TypeScript code—just reload the plugin in Figma.

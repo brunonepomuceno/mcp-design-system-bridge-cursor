@@ -144,17 +144,6 @@ async function createButtonInFigma(buttonData: ButtonData) {
       titleText.characters
     );
 
-    // Criar informações das props
-    const propsText = figma.createText();
-    propsText.characters = `${Object.keys(buttonData.properties).length} propriedades`;
-    propsText.name = "Button Properties";
-    propsText.fontName = fontName;
-    propsText.fontSize = 12;
-    propsText.x = 20;
-    propsText.y = 80;
-    propsText.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
-    frame.appendChild(propsText);
-
     // Adicionar auto-layout
     frame.layoutMode = "VERTICAL";
     frame.primaryAxisAlignItems = "MIN";

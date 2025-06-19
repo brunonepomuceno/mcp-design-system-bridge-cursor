@@ -1,9 +1,8 @@
 {
   "name": "button-primary",
   "label": "botão",
-  "properties": {},
   "styles": {
-    "backgroundColor": "#ff0000",
+    "backgroundColor": "#ffffff",
     "borderRadius": "8px",
     "borderWidth": "1px",
     "borderColor": "#000000",
