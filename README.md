@@ -89,14 +89,38 @@ O arquivo `Button.json` define as propriedades do componente Button:
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Building the Figma Plugin
+## Build do Plugin Figma
 
-Whenever you make changes to the plugin TypeScript code (for example, in `figma-plugin/code.ts`), you must run the TypeScript build to generate the updated JavaScript file that Figma will execute. To do this, run:
+Sempre que você fizer alterações no código TypeScript do plugin (por exemplo, em `figma-plugin/code.ts`), é necessário rodar o build do TypeScript para gerar o arquivo JavaScript que o Figma executa. Para isso, rode:
 
 ```
 npx tsc --project tsconfig.json
 ```
 
-This will compile your TypeScript files and update the corresponding JavaScript files in the output directory. Only after this step will your changes take effect in Figma.
+Isso irá compilar seus arquivos TypeScript e atualizar os arquivos JavaScript no diretório de saída. Só depois desse passo suas alterações terão efeito no Figma.
 
-If you only change the `button.json` or other data files, you do **not** need to rebuild the TypeScript code—just reload the plugin in Figma.
+Se você alterar apenas o `button.json` ou outros arquivos de dados, **não** precisa rodar o build do TypeScript—basta recarregar o plugin no Figma.
+
+### Build automático (modo watch)
+
+Para facilitar o desenvolvimento, você pode usar o modo watch do TypeScript para recompilar automaticamente o plugin sempre que salvar alterações:
+
+```
+npx tsc --project tsconfig.json --watch
+```
+
+Ou, adicione este script ao seu `package.json`:
+
+```
+"scripts": {
+  "watch:plugin": "tsc --project tsconfig.json --watch"
+}
+```
+
+Depois rode:
+
+```
+npm run watch:plugin
+```
+
+Assim, seu código do plugin estará sempre atualizado sem precisar rodar o comando de build manualmente a cada alteração.

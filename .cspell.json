@@ -1,0 +1,28 @@
+{
+  "version": "0.2",
+  "language": "pt,pt_BR,en",
+  "dictionaries": ["pt_BR", "en_US"],
+  "dictionaryDefinitions": [
+    {
+      "name": "pt_BR",
+      "path": "./node_modules/cspell-dict-pt-br/cspell-ext.json"
+    }
+  ],
+  "enabledLanguageIds": [
+    "markdown",
+    "plaintext",
+    "json",
+    "typescript",
+    "javascript"
+  ],
+  "ignorePaths": ["node_modules/**", "dist/**", "build/**"],
+  "words": [
+    "Figma",
+    "plugin",
+    "json",
+    "typescript",
+    "auto-layout",
+    "hug",
+    "MCP"
+  ]
+}

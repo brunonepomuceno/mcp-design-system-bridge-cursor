@@ -14,7 +14,8 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "prepare": "husky install",
-    "start:server": "node scripts/button-api-server.cjs"
+    "start:server": "node scripts/button-api-server.cjs",
+    "watch:plugin": "tsc --project tsconfig.json --watch"
   },
   "keywords": [
     "mcp",
@@ -58,6 +59,7 @@
     "@typescript-eslint/parser": "^7.0.2",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
+    "cspell-dict-pt-br": "^1.1.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
