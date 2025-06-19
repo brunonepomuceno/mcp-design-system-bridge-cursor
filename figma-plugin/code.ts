@@ -47,12 +47,23 @@ async function createButtonInFigma(buttonData: ButtonData) {
     console.log("[MCP] Iniciando criação do botão no Figma", buttonData);
 
     // Criar um frame para o botão
+    let initialBg = { r: 0.95, g: 0.95, b: 0.95 };
+    if (buttonData.styles && buttonData.styles.backgroundColor) {
+      // Converter hex para RGB normalizado (0-1)
+      const hex = buttonData.styles.backgroundColor;
+      const bigint = parseInt(hex.replace("#", ""), 16);
+      initialBg = {
+        r: ((bigint >> 16) & 255) / 255,
+        g: ((bigint >> 8) & 255) / 255,
+        b: (bigint & 255) / 255,
+      };
+    }
     const frame = figma.createFrame();
     frame.name = buttonData.name;
     frame.resize(300, 120); // Aumentado para acomodar mais informações
     frame.x = 0;
     frame.y = 0;
-    frame.fills = [{ type: "SOLID", color: { r: 0.95, g: 0.95, b: 0.95 } }]; // Fundo cinza claro
+    frame.fills = [{ type: "SOLID", color: initialBg }]; // Fundo já com a cor do button.json se existir
     frame.cornerRadius = 8;
     console.log("[MCP] Frame criado");
 
@@ -554,8 +565,10 @@ figma.ui.onmessage = async (msg) => {
 
   if (msg.type === "fetch-button-json") {
     try {
-      // Buscar dados do botão da API
-      const response = await fetch("http://localhost:3001/api/button");
+      // Buscar dados do botão da API SEM CACHE
+      const response = await fetch("http://localhost:3001/api/button", {
+        cache: "reload",
+      });
       const buttonData = await response.json();
       console.log("[MCP] Dados do botão recebidos:", buttonData);
 

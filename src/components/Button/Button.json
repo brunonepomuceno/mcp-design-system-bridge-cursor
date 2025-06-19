@@ -1,9 +1,9 @@
 {
-  "name": "Button",
-  "description": "Button",
+  "name": "oi",
+  "description": "teste",
   "properties": {},
   "styles": {
-    "backgroundColor": "#ff0000",
+    "backgroundColor": "#f2f2f2",
     "borderRadius": "8px",
     "borderWidth": "1px",
     "borderColor": "#000000",
