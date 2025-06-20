@@ -41,51 +41,46 @@ function hexToRgb(hex: string) {
     : { r: 0, g: 0, b: 0 };
 }
 
-// Função para criar o botão no Figma
-async function createButtonInFigma(buttonData: ButtonData) {
+// Função para criar o componente no Figma (versão inicial generalizada)
+async function createComponentInFigma(componentData: ButtonData) {
+  // Reutilizando a interface por enquanto
   try {
-    console.log("[MCP] Iniciando criação do botão no Figma", buttonData);
+    console.log(
+      "[MCP] Iniciando criação do componente no Figma",
+      componentData
+    );
 
-    // Criar um frame para o botão
-    let initialBg = { r: 0.95, g: 0.95, b: 0.95 };
-    if (buttonData.styles && buttonData.styles.backgroundColor) {
-      // Converter hex para RGB normalizado (0-1)
-      const hex = buttonData.styles.backgroundColor;
-      const bigint = parseInt(hex.replace("#", ""), 16);
-      initialBg = {
-        r: ((bigint >> 16) & 255) / 255,
-        g: ((bigint >> 8) & 255) / 255,
-        b: (bigint & 255) / 255,
-      };
+    // Criar um frame para o componente
+    let initialBg = { r: 0.95, g: 0.95, b: 0.95 }; // Fundo padrão
+    if (componentData.styles && componentData.styles.backgroundColor) {
+      const hex = componentData.styles.backgroundColor;
+      const rgb = hexToRgb(hex); // Supondo que hexToRgb exista
+      initialBg = rgb;
     }
     const frame = figma.createFrame();
-    frame.name = buttonData.name;
+    frame.name = componentData.name || "Component"; // Usar o nome do JSON
     frame.x = 0;
     frame.y = 0;
-    frame.fills = [{ type: "SOLID", color: initialBg }]; // Fundo já com a cor do button.json se existir
+    frame.fills = [{ type: "SOLID", color: initialBg }];
     frame.cornerRadius = 8;
     console.log("[MCP] Frame criado");
 
     // Auto-layout horizontal e hug contents
     frame.layoutMode = "HORIZONTAL";
-    frame.primaryAxisSizingMode = "AUTO"; // Hug contents na horizontal
-    frame.counterAxisSizingMode = "AUTO"; // Hug contents na vertical
-    frame.primaryAxisAlignItems = "MIN";
-    frame.counterAxisAlignItems = "MIN";
+    frame.primaryAxisSizingMode = "AUTO";
+    frame.counterAxisSizingMode = "AUTO";
     frame.paddingLeft = 20;
     frame.paddingRight = 20;
     frame.paddingTop = 20;
     frame.paddingBottom = 20;
     frame.itemSpacing = 10;
 
-    // Tentar carregar a fonte Inter
+    // Tentar carregar a fonte
     let fontName = { family: "Inter", style: "Regular" };
     try {
-      console.log("[MCP] Tentando carregar fonte Inter");
       await figma.loadFontAsync(fontName);
     } catch (error) {
       console.log("[MCP] Erro ao carregar Inter, tentando fonte alternativa");
-      // Se Inter não estiver disponível, usar a primeira fonte do sistema
       const availableFonts = await figma.listAvailableFontsAsync();
       const systemFont = availableFonts.find(
         (f) => !f.fontName.family.startsWith(".")
@@ -93,75 +88,37 @@ async function createButtonInFigma(buttonData: ButtonData) {
       if (systemFont) {
         fontName = systemFont.fontName;
         await figma.loadFontAsync(fontName);
-        console.log("[MCP] Usando fonte alternativa:", fontName);
       } else {
         throw new Error("Nenhuma fonte disponível");
       }
     }
 
-    // Criar título
+    // Criar texto
     const titleText = figma.createText();
-    titleText.name = "Button Title";
-    titleText.fontName = fontName; // Setar fontName antes de carregar
-    console.log("[MCP][DIAG] fontName a ser carregada:", fontName);
-    try {
-      const availableFonts = await figma.listAvailableFontsAsync();
-      console.log(
-        "[MCP][DIAG] Fontes disponíveis:",
-        availableFonts.map((f) => f.fontName)
-      );
-    } catch (e) {
-      console.error("[MCP][DIAG] Erro ao listar fontes disponíveis:", e);
-    }
-    try {
-      await figma.loadFontAsync(fontName);
-      console.log("[MCP][DIAG] Fonte carregada com sucesso:", fontName);
-    } catch (e) {
-      console.error("[MCP][DIAG] Erro ao carregar fonte:", fontName, e);
-    }
+    await figma.loadFontAsync(fontName);
+    titleText.fontName = fontName;
     titleText.fontSize = 20;
-    titleText.x = 20;
-    titleText.y = 20;
     titleText.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
-    // Garantir que label nunca seja undefined ou vazio
-    let safeLabel = buttonData.label;
+
+    let safeLabel = componentData.label;
     if (
       !safeLabel ||
       typeof safeLabel !== "string" ||
       safeLabel.trim() === ""
     ) {
-      console.error(
-        "[MCP] label do botão está vazio ou indefinido! Usando fallback 'Button'. Dados recebidos:",
-        buttonData
-      );
-      safeLabel = "Button";
+      safeLabel = componentData.name || "Label"; // Fallback para o nome do componente
     }
-    console.log("[MCP][DIAG] Valor de characters a ser setado:", safeLabel);
-    try {
-      titleText.characters = safeLabel;
-      console.log(
-        "[MCP][DIAG] characters setado com sucesso:",
-        titleText.characters
-      );
-    } catch (e) {
-      console.error("[MCP][DIAG] Erro ao setar characters:", safeLabel, e);
-    }
+    titleText.characters = safeLabel;
+
     frame.appendChild(titleText);
-    // Log para garantir separação
-    console.log(
-      "[MCP] frame.name:",
-      frame.name,
-      "titleText.characters:",
-      titleText.characters
-    );
 
     // Centralizar o frame na viewport
     figma.viewport.scrollAndZoomIntoView([frame]);
 
-    console.log("[MCP] Botão criado com sucesso");
+    console.log("[MCP] Componente criado com sucesso");
     return frame;
   } catch (error) {
-    console.error("[MCP] Erro ao criar botão:", error);
+    console.error("[MCP] Erro ao criar componente:", error);
     throw error;
   }
 }
@@ -560,116 +517,50 @@ async function applyCodeChangesToFigma(
 figma.ui.onmessage = async (msg) => {
   console.log("[MCP] Mensagem recebida da UI:", msg);
 
-  if (msg.type === "fetch-button-json") {
+  // Lógica atualizada para ser genérica
+  if (msg.type === "fetch-component-json" && msg.componentName) {
     try {
-      // Buscar dados do botão da API SEM CACHE
-      const response = await fetch("http://localhost:3001/api/button", {
-        cache: "reload",
-      });
-      const buttonData = await response.json();
-      console.log("[MCP] Dados do botão recebidos:", buttonData);
-
-      // Criar o botão no Figma
-      const frame = await createButtonInFigma(buttonData);
-
-      // Adicionar listener para mudanças no frame e no texto do botão
-      frame.setPluginData("isButton", "true");
-      const titleText = frame.findOne((node) => node.name === "Button Title");
-      figma.on("documentchange", (event) => {
-        const changedNodes = event.documentChanges.filter(
-          (change) =>
-            change.type === "PROPERTY_CHANGE" &&
-            (change.node.id === frame.id ||
-              (titleText && change.node.id === titleText.id))
-        );
-        if (changedNodes.length > 0) {
-          // Corrigir logs para evitar erros de linter
-          const changedNodesLog = changedNodes.map((c) => {
-            const id = (c as any).node?.id || "unknown";
-            const properties = (c as any).properties || {};
-            return { id, properties };
-          });
-          let titleTextValue = undefined;
-          if (titleText && "characters" in titleText) {
-            titleTextValue = (titleText as TextNode).characters;
-          }
-          console.log(
-            "[MCP] documentchange disparado. changedNodes:",
-            changedNodesLog,
-            "frame.name:",
-            frame.name,
-            "titleText:",
-            titleTextValue
-          );
-          updateButtonJson(frame);
+      // Buscar dados do componente da nova API genérica
+      const response = await fetch(
+        `http://localhost:3002/api/component/${msg.componentName}`,
+        {
+          cache: "reload",
         }
-      });
+      );
+      const componentData = await response.json();
+      console.log(
+        `[MCP] Dados do componente ${msg.componentName} recebidos:`,
+        componentData
+      );
 
-      figma.notify("Botão criado com sucesso!");
+      // Criar o componente no Figma
+      const frame = await createComponentInFigma(componentData);
+
+      // TODO: A lógica de 'documentchange' e polling também precisa ser generalizada
+      // Por enquanto, vamos simplificar para focar na criação
+      frame.setPluginData("isComponent", "true");
+      frame.setPluginData("componentName", msg.componentName);
+
+      figma.notify(`${msg.componentName} criado com sucesso!`);
     } catch (error: any) {
-      console.error("[MCP] Erro ao criar botão:", error);
-      figma.notify("Erro ao criar botão");
+      console.error(
+        `[MCP] Erro ao criar componente ${msg.componentName}:`,
+        error
+      );
+      figma.notify(`Erro ao criar componente ${msg.componentName}`);
     }
   }
 };
 
+// ... (A lógica de polling precisará ser desativada ou refatorada)
+// Por enquanto, vou comentar para evitar erros.
+/*
 // Variável para armazenar o último timestamp conhecido do button.json
 let lastButtonJsonTimestamp = 0;
 
 // Função de polling para verificar mudanças no button.json
 async function pollButtonJsonChanges() {
-  try {
-    const response = await fetch(
-      "http://localhost:3001/api/button/last-modified"
-    );
-    if (!response.ok) {
-      console.error(
-        "[MCP] Erro ao buscar timestamp do button.json:",
-        response.status
-      );
-      return;
-    }
-    const data = await response.json();
-    const currentTimestamp = data.timestamp;
-
-    if (currentTimestamp > lastButtonJsonTimestamp) {
-      console.log("[MCP] button.json mudou. Buscando novos dados...");
-      lastButtonJsonTimestamp = currentTimestamp;
-
-      // Buscar os dados do button.json
-      const buttonDataResponse = await fetch(
-        "http://localhost:3001/api/button"
-      );
-      if (!buttonDataResponse.ok) {
-        console.error(
-          "[MCP] Erro ao buscar button.json para aplicar:",
-          buttonDataResponse.status
-        );
-        return;
-      }
-      const updatedButtonData = await buttonDataResponse.json();
-      console.log(
-        "[MCP] Novos dados do button.json recebidos:",
-        updatedButtonData
-      );
-
-      // Encontrar o frame do botão no Figma e aplicar as mudanças
-      const buttonFrame = figma.currentPage.findAll(
-        (node) => node.getPluginData("isButton") === "true"
-      )[0] as FrameNode | undefined;
-
-      if (buttonFrame) {
-        await applyCodeChangesToFigma(buttonFrame, updatedButtonData);
-        figma.notify("Botão atualizado do código!", { timeout: 5000 });
-      } else {
-        console.log(
-          "[MCP] Frame do botão não encontrado no Figma para aplicar atualizações."
-        );
-      }
-    }
-  } catch (error: any) {
-    console.error("[MCP] Erro no polling de button.json:", error);
-  }
+// ... toda a função de polling ...
 }
 
 // Iniciar o polling (a cada 2 segundos, por exemplo)
@@ -680,3 +571,4 @@ figma.on("close", () => {
   console.log("[MCP] Plugin fechado. Parando polling.");
   clearInterval(pollingInterval);
 });
+*/

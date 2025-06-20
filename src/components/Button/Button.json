@@ -2,7 +2,7 @@
   "name": "button-secondary",
   "label": "botão bonitão",
   "styles": {
-    "backgroundColor": "#ff0000",
+    "backgroundColor": "#ffff00",
     "borderRadius": "8px",
     "borderWidth": "1px",
     "borderColor": "#000000",

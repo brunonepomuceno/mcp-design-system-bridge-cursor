@@ -14,7 +14,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "prepare": "husky install",
-    "start:server": "node scripts/button-api-server.cjs",
+    "start:server": "node scripts/generic-api-server.cjs",
     "watch:plugin": "tsc --project tsconfig.json --watch"
   },
   "keywords": [

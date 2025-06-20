@@ -70,7 +70,19 @@
   </head>
   <body>
     <h2>MCP Figma Sync</h2>
-    <button id="fetch">Buscar e Criar Button</button>
+
+    <select
+      id="component-select"
+      style="
+        margin-bottom: 16px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        min-width: 200px;
+      "
+    ></select>
+
+    <button id="create-component">Criar Componente</button>
 
     <!-- O status e o output serão mantidos no DOM para funcionalidade, mas escondidos via CSS -->
     <div class="status" id="status"></div>
@@ -79,21 +91,72 @@
     <script>
       const status = document.getElementById("status");
       const output = document.getElementById("output");
+      const select = document.getElementById("component-select");
+      const createButton = document.getElementById("create-component");
 
-      document.getElementById("fetch").onclick = () => {
-        status.textContent = "Buscando Button.json...";
+      // Função para buscar e popular os componentes
+      async function fetchComponents() {
+        try {
+          status.textContent = "Buscando componentes...";
+          // Lembre-se de iniciar o novo servidor na porta 3002
+          const response = await fetch("http://localhost:3002/api/components");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const components = await response.json();
+
+          select.innerHTML = ""; // Limpa opções antigas
+          if (components.length === 0) {
+            select.innerHTML =
+              "<option disabled>Nenhum componente encontrado</option>";
+            createButton.disabled = true;
+          } else {
+            components.forEach((component) => {
+              const option = document.createElement("option");
+              option.value = component;
+              option.textContent = component;
+              select.appendChild(option);
+            });
+            createButton.disabled = false;
+          }
+          status.textContent = "Componentes carregados.";
+        } catch (error) {
+          console.error("Erro ao buscar componentes:", error);
+          status.textContent = "Erro ao buscar componentes.";
+          select.innerHTML = "<option disabled>Erro ao carregar</option>";
+          createButton.disabled = true;
+        }
+      }
+
+      // Carregar componentes ao iniciar o plugin
+      fetchComponents();
+
+      createButton.onclick = () => {
+        const selectedComponent = select.value;
+        if (!selectedComponent) {
+          status.textContent = "Por favor, selecione um componente.";
+          return;
+        }
+        status.textContent = `Buscando ${selectedComponent}.json...`;
+        // O tipo da mensagem foi alterado para 'fetch-component-json'
         parent.postMessage(
-          { pluginMessage: { type: "fetch-button-json" } },
+          {
+            pluginMessage: {
+              type: "fetch-component-json",
+              componentName: selectedComponent,
+            },
+          },
           "*"
         );
       };
 
       window.onmessage = (event) => {
         const { type, data } = event.data.pluginMessage || {};
-        if (type === "button-json") {
-          window.lastButtonJson = data;
+        // O tipo da mensagem foi alterado para 'component-json'
+        if (type === "component-json") {
+          window.lastComponentJson = data;
           output.textContent = JSON.stringify(data, null, 2);
-          status.textContent = "Button.json carregado com sucesso!";
+          status.textContent = `${data.name}.json carregado com sucesso!`;
         }
       };
     </script>
