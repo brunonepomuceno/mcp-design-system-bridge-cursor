@@ -1,0 +1,17 @@
+{
+  "name": "SearchInput",
+  "label": "Placeholder",
+  "properties": {
+    "hasIcon": true
+  },
+  "styles": {
+    "backgroundColor": "#ffffff",
+    "borderRadius": "8px",
+    "borderWidth": "1px",
+    "borderColor": "#D9D9D9",
+    "padding": "12px 16px",
+    "fontSize": "16px",
+    "color": "#B3B3B3",
+    "fontFamily": "Inter"
+  }
+}

@@ -15,7 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "prepare": "husky install",
     "start:server": "node scripts/generic-api-server.cjs",
-    "watch:plugin": "tsc --project tsconfig.json --watch"
+    "watch:plugin": "tsc --project tsconfig.figma.json --watch"
   },
   "keywords": [
     "mcp",
