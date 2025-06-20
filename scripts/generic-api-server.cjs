@@ -8,7 +8,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const componentsDir = path.join(__dirname, "../src/components");
+const componentsDir = path.join(
+  process.cwd(),
+  "src",
+  "design-system",
+  "components"
+);
 
 // Verificar se o token do Figma está configurado
 if (!process.env.FIGMA_ACCESS_TOKEN) {
