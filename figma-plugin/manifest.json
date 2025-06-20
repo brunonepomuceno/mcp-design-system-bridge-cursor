@@ -1,8 +1,8 @@
 {
-  "name": "MCP Button Sync",
+  "name": "MCP Figma Sync",
   "id": "mcp-button-sync",
   "api": "1.0.0",
   "main": "code.js",
   "ui": "ui.html",
   "editorType": ["figma"]
-} 
+}

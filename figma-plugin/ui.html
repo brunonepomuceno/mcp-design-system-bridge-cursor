@@ -1,62 +1,84 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>MCP Button Sync</title>
+    <title>MCP Figma Sync</title>
     <style>
+      /* Liquid Glass Style inspired by Apple's new design language */
+      html,
       body {
-        font-family: Inter, sans-serif;
-        padding: 16px;
-        color: #333;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        text-align: center;
+        /* The plugin window needs to have a transparent background for the blur to work */
+        background: transparent;
       }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px; /* Espaçamento entre o título e o botão */
+      }
+
       h2 {
-        margin: 0 0 16px 0;
-        font-size: 16px;
+        margin: 0;
+        font-size: 22px;
         font-weight: 600;
+        color: #1d1d1f;
+        text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
       }
+
       button {
-        background: #18b0f1;
+        background: rgba(0, 122, 255, 0.85); /* Apple's vibrant blue */
         color: white;
         border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-size: 14px;
+        padding: 14px 28px;
+        border-radius: 50px; /* Pill shape */
+        font-size: 17px;
+        font-weight: 500;
         cursor: pointer;
-        margin-right: 8px;
-        margin-bottom: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
       }
+
       button:hover {
-        background: #0ea5e9;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 122, 255, 0.25);
+        background: rgba(0, 122, 255, 0.95);
       }
+
       button:active {
-        background: #0284c7;
+        transform: translateY(0px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        background: rgba(0, 110, 230, 0.95);
       }
-      #output {
-        background: #f8f9fa;
-        padding: 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        margin-top: 16px;
-        max-height: 200px;
-        overflow-y: auto;
-        white-space: pre-wrap;
-      }
+
+      /* Hide the output for a cleaner UI, matching the screenshot */
+      #output,
       .status {
-        margin-top: 8px;
-        font-size: 12px;
-        color: #666;
+        display: none;
       }
     </style>
   </head>
   <body>
-    <h2>MCP Button Sync</h2>
-    <div>
-      <button id="fetch">Buscar e Criar Button</button>
-    </div>
+    <h2>MCP Figma Sync</h2>
+    <button id="fetch">Buscar e Criar Button</button>
+
+    <!-- O status e o output serão mantidos no DOM para funcionalidade, mas escondidos via CSS -->
     <div class="status" id="status"></div>
     <pre id="output"></pre>
+
     <script>
       const status = document.getElementById("status");
+      const output = document.getElementById("output");
 
       document.getElementById("fetch").onclick = () => {
         status.textContent = "Buscando Button.json...";
@@ -70,11 +92,7 @@
         const { type, data } = event.data.pluginMessage || {};
         if (type === "button-json") {
           window.lastButtonJson = data;
-          document.getElementById("output").textContent = JSON.stringify(
-            data,
-            null,
-            2
-          );
+          output.textContent = JSON.stringify(data, null, 2);
           status.textContent = "Button.json carregado com sucesso!";
         }
       };
