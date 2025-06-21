@@ -44,86 +44,88 @@ function hexToRgb(hex: string) {
     : { r: 0, g: 0, b: 0 };
 }
 
-// Função para criar o componente no Figma (versão inicial generalizada)
-async function createComponentInFigma(componentData: ButtonData) {
-  // Reutilizando a interface por enquanto
-  try {
-    console.log(
-      "[MCP] Iniciando criação do componente no Figma",
-      componentData
-    );
+// Função RECURSIVA para renderizar um nó e seus filhos a partir do JSON
+async function renderNode(nodeData: any): Promise<SceneNode | null> {
+  if (!nodeData || !nodeData.type) return null;
 
-    // Criar um frame para o componente
-    let initialBg = { r: 0.95, g: 0.95, b: 0.95 }; // Fundo padrão
-    if (componentData.styles && componentData.styles.backgroundColor) {
-      const hex = componentData.styles.backgroundColor;
-      const rgb = hexToRgb(hex); // Supondo que hexToRgb exista
-      initialBg = rgb;
+  let figmaNode: SceneNode | null = null;
+  const { type, name, styles, children, characters } = nodeData;
+
+  switch (type) {
+    case "FRAME": {
+      const frame = figma.createFrame();
+      // Aplicar estilos APENAS se eles existirem
+      if (styles) {
+        if (styles.backgroundColor)
+          frame.fills = [
+            { type: "SOLID", color: hexToRgb(styles.backgroundColor) },
+          ];
+        if (styles.borderRadius)
+          frame.cornerRadius = parseFloat(styles.borderRadius);
+        if (styles.borderWidth && styles.borderColor) {
+          frame.strokes = [
+            { type: "SOLID", color: hexToRgb(styles.borderColor) },
+          ];
+          frame.strokeWeight = parseFloat(styles.borderWidth);
+        }
+      }
+      // Aplicar propriedades de auto-layout de forma explícita e segura
+      if (nodeData.layoutMode) frame.layoutMode = nodeData.layoutMode;
+      if (nodeData.primaryAxisSizingMode)
+        frame.primaryAxisSizingMode = nodeData.primaryAxisSizingMode;
+      if (nodeData.counterAxisSizingMode)
+        frame.counterAxisSizingMode = nodeData.counterAxisSizingMode;
+      if (nodeData.primaryAxisAlignItems)
+        frame.primaryAxisAlignItems = nodeData.primaryAxisAlignItems;
+      if (nodeData.itemSpacing) frame.itemSpacing = nodeData.itemSpacing;
+      if (nodeData.paddingLeft) frame.paddingLeft = nodeData.paddingLeft;
+      if (nodeData.paddingRight) frame.paddingRight = nodeData.paddingRight;
+      if (nodeData.paddingTop) frame.paddingTop = nodeData.paddingTop;
+      if (nodeData.paddingBottom) frame.paddingBottom = nodeData.paddingBottom;
+
+      figmaNode = frame;
+      break;
     }
-    const frame = figma.createFrame();
-    frame.name = componentData.name || "Component"; // Usar o nome do JSON
-    frame.x = 0;
-    frame.y = 0;
-    frame.fills = [{ type: "SOLID", color: initialBg }];
-    frame.cornerRadius = 8;
-    console.log("[MCP] Frame criado");
+    case "TEXT": {
+      const text = figma.createText();
+      // Aplicar estilos de texto APENAS se eles existirem
+      if (styles) {
+        await figma.loadFontAsync({
+          family: styles.fontFamily || "Inter",
+          style: styles.fontWeight || "Regular",
+        });
+        if (styles.fontSize) text.fontSize = styles.fontSize;
+        if (styles.color)
+          text.fills = [{ type: "SOLID", color: hexToRgb(styles.color) }];
+      }
+      if (characters) text.characters = characters;
+      if (nodeData.textAutoResize)
+        text.textAutoResize = nodeData.textAutoResize;
+      figmaNode = text;
+      break;
+    }
+    default:
+      console.warn(`[MCP] Tipo de nó não suportado: ${type}`);
+      return null;
+  }
 
-    // Auto-layout horizontal e hug contents
-    frame.layoutMode = "HORIZONTAL";
-    frame.primaryAxisSizingMode = "AUTO";
-    frame.counterAxisSizingMode = "AUTO";
-    frame.paddingLeft = 20;
-    frame.paddingRight = 20;
-    frame.paddingTop = 20;
-    frame.paddingBottom = 20;
-    frame.itemSpacing = 10;
+  if (name) figmaNode.name = name;
+  if (nodeData.layoutGrow !== undefined)
+    figmaNode.layoutGrow = nodeData.layoutGrow;
 
-    // Tentar carregar a fonte
-    let fontName = { family: "Inter", style: "Regular" };
-    try {
-      await figma.loadFontAsync(fontName);
-    } catch (error) {
-      console.log("[MCP] Erro ao carregar Inter, tentando fonte alternativa");
-      const availableFonts = await figma.listAvailableFontsAsync();
-      const systemFont = availableFonts.find(
-        (f) => !f.fontName.family.startsWith(".")
-      );
-      if (systemFont) {
-        fontName = systemFont.fontName;
-        await figma.loadFontAsync(fontName);
-      } else {
-        throw new Error("Nenhuma fonte disponível");
+  // Renderizar filhos (a parte recursiva)
+  if (children && "appendChild" in figmaNode) {
+    for (const childData of children) {
+      const childNode = await renderNode(childData);
+      if (childNode) {
+        (figmaNode as FrameNode | ComponentNode | InstanceNode).appendChild(
+          childNode
+        );
       }
     }
-
-    // Criar texto
-    const titleText = figma.createText();
-    await figma.loadFontAsync(fontName);
-    titleText.fontName = fontName;
-    titleText.fontSize = 20;
-    titleText.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
-
-    let safeLabel = componentData.label;
-    if (
-      !safeLabel ||
-      typeof safeLabel !== "string" ||
-      safeLabel.trim() === ""
-    ) {
-      safeLabel = componentData.name || "Label"; // Fallback para o nome do componente
-    }
-    titleText.characters = safeLabel;
-
-    frame.appendChild(titleText);
-
-    // Centralizar o frame na viewport
-    figma.viewport.scrollAndZoomIntoView([frame]);
-
-    console.log("[MCP] Componente criado com sucesso");
-    return frame;
-  } catch (error) {
-    console.error("[MCP] Erro ao criar componente:", error);
-    throw error;
   }
+
+  return figmaNode;
 }
 
 // Função para atualizar o component.json com as alterações do Figma (GENÉRICA)
@@ -390,10 +392,8 @@ async function applyCodeChangesToFigma(
 figma.ui.onmessage = async (msg) => {
   console.log("[MCP] Mensagem recebida da UI:", msg);
 
-  // Lógica atualizada para ser genérica
   if (msg.type === "fetch-component-json" && msg.componentName) {
     try {
-      // Buscar dados do componente da nova API genérica
       const response = await fetch(
         `http://localhost:3002/api/component/${msg.componentName}`,
         {
@@ -406,38 +406,20 @@ figma.ui.onmessage = async (msg) => {
         componentData
       );
 
-      // Criar o componente no Figma
-      const frame = await createComponentInFigma(componentData);
+      // Usar o novo renderizador recursivo, começando pelo nó raiz do JSON
+      const rootNode = await renderNode(componentData.node);
 
-      // Ativar a sincronização de volta para o código para este novo componente
-      frame.setPluginData("isComponent", "true");
-      frame.setPluginData("componentName", msg.componentName);
+      if (rootNode) {
+        // Centralizar o novo componente na viewport
+        figma.viewport.scrollAndZoomIntoView([rootNode]);
 
-      figma.on("documentchange", (event) => {
-        for (const change of event.documentChanges) {
-          // Checar se a mudança foi no frame do nosso componente
-          if (
-            change.type === "PROPERTY_CHANGE" &&
-            change.node.id === frame.id
-          ) {
-            // Limpar timer antigo se existir
-            const existingTimeout = debounceTimers.get(frame.id);
-            if (existingTimeout) {
-              clearTimeout(existingTimeout);
-            }
-
-            // Criar um novo timer e guardar no Map
-            const newTimeout = setTimeout(() => {
-              updateComponentJson(frame);
-              debounceTimers.delete(frame.id); // Limpar o timer do Map após executar
-            }, 500); // Atraso de 500ms
-
-            debounceTimers.set(frame.id, newTimeout);
-          }
-        }
-      });
-
-      figma.notify(`${msg.componentName} criado com sucesso!`);
+        // A lógica de sincronização precisará ser atualizada para lidar com a nova estrutura
+        rootNode.setPluginData("isComponent", "true");
+        rootNode.setPluginData("componentName", msg.componentName);
+        figma.notify(`${msg.componentName} criado com sucesso!`);
+      } else {
+        throw new Error("Falha ao renderizar o nó raiz do componente.");
+      }
     } catch (error: any) {
       console.error(
         `[MCP] Erro ao criar componente ${msg.componentName}:`,

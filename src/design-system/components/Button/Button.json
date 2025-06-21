@@ -1,24 +1,36 @@
 {
-  "name": "button-secondary",
-  "label": "botão bonitão",
-  "styles": {
-    "backgroundColor": "#ff0000",
-    "borderRadius": "8px",
-    "borderWidth": "1px",
-    "borderColor": "#000000",
-    "borderStyle": "solid",
-    "padding": "20px 20px 20px 20px",
-    "fontSize": "20px",
-    "fontWeight": "normal",
-    "color": "#333333",
-    "textAlign": "center",
-    "cursor": "pointer",
-    "transition": "all 0.2s ease-in-out",
-    "hover": {
-      "backgroundColor": "",
-      "color": "",
-      "borderColor": ""
+  "name": "Button",
+  "node": {
+    "type": "FRAME",
+    "name": "Button",
+    "layoutMode": "HORIZONTAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "AUTO",
+    "primaryAxisAlignItems": "CENTER",
+    "itemSpacing": 10,
+    "styles": {
+      "backgroundColor": "#ffff00",
+      "borderRadius": "8px",
+      "borderWidth": "1px",
+      "borderColor": "#000000"
     },
-    "fontFamily": "Inter"
+    "paddingLeft": 20,
+    "paddingRight": 20,
+    "paddingTop": 20,
+    "paddingBottom": 20,
+    "children": [
+      {
+        "type": "TEXT",
+        "name": "Button Label",
+        "characters": "botão bonitão",
+        "textAutoResize": "HEIGHT",
+        "styles": {
+          "fontSize": 20,
+          "fontFamily": "Inter",
+          "fontWeight": "Regular",
+          "color": "#333333"
+        }
+      }
+    ]
   }
 }

@@ -1,17 +1,54 @@
 {
   "name": "SearchInput",
-  "label": "Placeholder",
-  "properties": {
-    "hasIcon": true
-  },
-  "styles": {
-    "backgroundColor": "#ffffff",
-    "borderRadius": "8px",
-    "borderWidth": "1px",
-    "borderColor": "#D9D9D9",
-    "padding": "12px 16px",
-    "fontSize": "16px",
-    "color": "#B3B3B3",
-    "fontFamily": "Inter"
+  "node": {
+    "type": "FRAME",
+    "name": "SearchInput",
+    "layoutMode": "HORIZONTAL",
+    "primaryAxisSizingMode": "FIXED",
+    "counterAxisSizingMode": "AUTO",
+    "primaryAxisAlignItems": "CENTER",
+    "itemSpacing": 8,
+    "paddingLeft": 16,
+    "paddingRight": 16,
+    "paddingTop": 12,
+    "paddingBottom": 12,
+    "styles": {
+      "backgroundColor": "#ffffff",
+      "borderRadius": "9999px",
+      "borderWidth": "1px",
+      "borderColor": "#D9D9D9"
+    },
+    "children": [
+      {
+        "type": "TEXT",
+        "name": "Placeholder",
+        "characters": "Placeholder",
+        "layoutGrow": 1,
+        "textAutoResize": "HEIGHT",
+        "styles": {
+          "fontSize": 16,
+          "fontFamily": "Inter",
+          "fontWeight": "Regular",
+          "color": "#B3B3B3"
+        }
+      },
+      {
+        "type": "FRAME",
+        "name": "IconContainer",
+        "layoutGrow": 0,
+        "primaryAxisSizingMode": "AUTO",
+        "counterAxisSizingMode": "AUTO",
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Icon",
+            "characters": "🔍",
+            "styles": {
+              "fontSize": 16
+            }
+          }
+        ]
+      }
+    ]
   }
 }
