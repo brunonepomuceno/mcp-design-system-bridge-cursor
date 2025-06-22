@@ -2,37 +2,6 @@ console.log("[MCP] Plugin iniciado");
 
 figma.showUI(__html__, { width: 320, height: 400 });
 
-// Interfaces
-interface ButtonData {
-  name: string;
-  label?: string;
-  properties: Record<string, any>;
-  styles: {
-    backgroundColor?: string;
-    borderRadius?: string;
-    borderWidth?: string;
-    borderColor?: string;
-    borderStyle?: string;
-    padding?: string;
-    fontSize?: string;
-    fontWeight?: string;
-    color?: string;
-    textAlign?: string;
-    cursor?: string;
-    transition?: string;
-    hover?: {
-      backgroundColor?: string;
-      color?: string;
-      borderColor?: string;
-    };
-    fontFamily?: string;
-  };
-}
-
-// Mapa para guardar os timers de debounce para cada componente
-const debounceTimers = new Map<string, number>();
-
-// Função auxiliar para converter hex para RGB
 function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
@@ -44,7 +13,14 @@ function hexToRgb(hex: string) {
     : { r: 0, g: 0, b: 0 };
 }
 
-// Função RECURSIVA para renderizar um nó e seus filhos a partir do JSON
+function rgbToHex(r: number, g: number, b: number): string {
+  const toHex = (n: number) => {
+    const hex = Math.round(n * 255).toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  };
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
 async function renderNode(nodeData: any): Promise<SceneNode | null> {
   if (!nodeData || !nodeData.type) return null;
 
@@ -54,7 +30,6 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
   switch (type) {
     case "FRAME": {
       const frame = figma.createFrame();
-      // Aplicar estilos APENAS se eles existirem
       if (styles) {
         if (styles.backgroundColor)
           frame.fills = [
@@ -69,7 +44,6 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
           frame.strokeWeight = parseFloat(styles.borderWidth);
         }
       }
-      // Aplicar propriedades de auto-layout de forma explícita e segura
       if (nodeData.width) frame.resize(nodeData.width, frame.height);
       if (nodeData.height) frame.resize(frame.width, nodeData.height);
       if (nodeData.layoutMode) frame.layoutMode = nodeData.layoutMode;
@@ -79,6 +53,8 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
         frame.counterAxisSizingMode = nodeData.counterAxisSizingMode;
       if (nodeData.primaryAxisAlignItems)
         frame.primaryAxisAlignItems = nodeData.primaryAxisAlignItems;
+      if (nodeData.counterAxisAlignItems)
+        frame.counterAxisAlignItems = nodeData.counterAxisAlignItems;
       if (nodeData.itemSpacing) frame.itemSpacing = nodeData.itemSpacing;
       if (nodeData.paddingLeft) frame.paddingLeft = nodeData.paddingLeft;
       if (nodeData.paddingRight) frame.paddingRight = nodeData.paddingRight;
@@ -90,7 +66,6 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
     }
     case "TEXT": {
       const text = figma.createText();
-      // Aplicar estilos de texto APENAS se eles existirem
       if (styles) {
         await figma.loadFontAsync({
           family: styles.fontFamily || "Inter",
@@ -117,7 +92,6 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
   if (nodeData.primaryAxisSizingMode && "primaryAxisSizingMode" in figmaNode)
     (figmaNode as any).primaryAxisSizingMode = nodeData.primaryAxisSizingMode;
 
-  // Renderizar filhos (a parte recursiva)
   if (children && "appendChild" in figmaNode) {
     for (const childData of children) {
       const childNode = await renderNode(childData);
@@ -132,59 +106,90 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
   return figmaNode;
 }
 
-// Função para atualizar o component.json com as alterações do Figma (GENÉRICA)
+function extractNodeData(node: SceneNode): any {
+  const nodeData: any = { type: node.type, name: node.name };
+  const styles: any = {};
+
+  if (
+    node.type === "FRAME" ||
+    node.type === "INSTANCE" ||
+    node.type === "COMPONENT"
+  ) {
+    if ("layoutMode" in node && node.layoutMode !== "NONE") {
+      nodeData.layoutMode = node.layoutMode;
+      nodeData.primaryAxisSizingMode = node.primaryAxisSizingMode;
+      nodeData.counterAxisSizingMode = node.counterAxisSizingMode;
+      nodeData.primaryAxisAlignItems = node.primaryAxisAlignItems;
+      nodeData.counterAxisAlignItems = node.counterAxisAlignItems;
+      nodeData.itemSpacing = node.itemSpacing;
+      nodeData.paddingLeft = node.paddingLeft;
+      nodeData.paddingRight = node.paddingRight;
+      nodeData.paddingTop = node.paddingTop;
+      nodeData.paddingBottom = node.paddingBottom;
+    }
+    nodeData.width = node.width;
+    nodeData.height = node.height;
+    if ("fills" in node && Array.isArray(node.fills) && node.fills.length > 0) {
+      const paint = node.fills[0];
+      if (paint.type === "SOLID")
+        styles.backgroundColor = rgbToHex(
+          paint.color.r,
+          paint.color.g,
+          paint.color.b
+        );
+    }
+    if ("strokes" in node && node.strokes.length > 0) {
+      const paint = node.strokes[0];
+      if (paint.type === "SOLID")
+        styles.borderColor = rgbToHex(
+          paint.color.r,
+          paint.color.g,
+          paint.color.b
+        );
+      styles.borderWidth = `${node.strokeWeight}px`;
+    }
+    if ("cornerRadius" in node && typeof node.cornerRadius === "number")
+      styles.borderRadius = `${node.cornerRadius}px`;
+  } else if (node.type === "TEXT") {
+    nodeData.characters = node.characters;
+    if (node.fontName !== figma.mixed) {
+      styles.fontFamily = node.fontName.family;
+      styles.fontWeight = node.fontName.style;
+    }
+    if (node.fontSize !== figma.mixed) styles.fontSize = node.fontSize;
+    if ("fills" in node && Array.isArray(node.fills) && node.fills.length > 0) {
+      const paint = node.fills[0];
+      if (paint.type === "SOLID")
+        styles.color = rgbToHex(paint.color.r, paint.color.g, paint.color.b);
+    }
+    if (node.textAutoResize) nodeData.textAutoResize = node.textAutoResize;
+  }
+
+  if (Object.keys(styles).length > 0) nodeData.styles = styles;
+  if ("layoutGrow" in node) nodeData.layoutGrow = node.layoutGrow;
+  if ("children" in node)
+    nodeData.children = node.children.map((child) => extractNodeData(child));
+
+  return nodeData;
+}
+
 async function updateComponentJson(frame: FrameNode) {
   try {
     const componentName = frame.getPluginData("componentName");
-    if (!componentName) {
-      console.log("[MCP] Frame não é um componente gerenciado. Ignorando.");
-      return;
-    }
+    if (!componentName) return;
 
     console.log(`[MCP] Iniciando atualização do ${componentName}.json`);
-
+    const extractedData = extractNodeData(frame);
+    const componentData = { name: componentName, node: extractedData };
     const apiUrl = `http://localhost:3002/api/component/${componentName}`;
 
-    // Buscar o estado atual do JSON para não perder dados não visuais
-    const response = await fetch(apiUrl);
-    const currentComponentData = await response.json();
-
-    // Extrair as cores do frame
-    const fills = frame.fills as readonly Paint[];
-    const backgroundColor =
-      fills && fills[0] && fills[0].type === "SOLID"
-        ? rgbToHex(fills[0].color.r, fills[0].color.g, fills[0].color.b)
-        : currentComponentData.styles?.backgroundColor || "#f2f2f2";
-
-    // Extrair o texto do componente (assumindo que há um nó de texto)
-    const titleNode = frame.findOne((node) => node.type === "TEXT") as
-      | TextNode
-      | undefined;
-    const componentLabel = titleNode
-      ? titleNode.characters
-      : currentComponentData.label || "";
-
-    // Criar um novo objeto com os dados atualizados, mantendo os dados existentes
-    const updatedComponentData = {
-      ...currentComponentData,
-      name: frame.name,
-      label: componentLabel,
-      styles: {
-        ...currentComponentData.styles,
-        backgroundColor,
-        borderRadius: `${String(frame.cornerRadius)}px`,
-        // ... (outras extrações de estilo podem ser adicionadas aqui)
-      },
-    };
-
-    // Enviar dados atualizados para a API
     const updateResponse = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(updatedComponentData),
+      body: JSON.stringify(componentData),
     });
 
     if (!updateResponse.ok) {
@@ -193,7 +198,6 @@ async function updateComponentJson(frame: FrameNode) {
         `HTTP error! status: ${updateResponse.status}, message: ${errorText}`
       );
     }
-
     figma.notify(`${componentName}.json atualizado com sucesso!`);
   } catch (error) {
     console.error("[MCP] Erro ao atualizar component.json:", error);
@@ -203,196 +207,6 @@ async function updateComponentJson(frame: FrameNode) {
   }
 }
 
-// Função auxiliar para converter RGB para hex
-function rgbToHex(r: number, g: number, b: number): string {
-  const toHex = (n: number) => {
-    const hex = Math.round(n * 255).toString(16);
-    return hex.length === 1 ? "0" + hex : hex;
-  };
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-// Função para aplicar as alterações do código ao Figma
-async function applyCodeChangesToFigma(
-  frame: FrameNode,
-  buttonData: ButtonData
-) {
-  console.log(
-    "[MCP] Aplicando alterações do código ao frame:",
-    frame.id,
-    "com dados:",
-    buttonData
-  );
-  console.log("[MCP Debug] buttonData.name received:", buttonData.name);
-  console.log("[MCP Debug] frame.name BEFORE update:", frame.name);
-
-  // Atualizar nome do frame
-  if (buttonData.name) {
-    frame.name = buttonData.name;
-    console.log("[MCP Debug] frame.name AFTER update:", frame.name);
-  }
-
-  // Atualizar o título do botão
-  const titleText = frame.findOne(
-    (node) => node.name === "Button Title"
-  ) as TextNode;
-  console.log("[MCP Debug] Found titleText by name:", titleText);
-  if (titleText) {
-    console.log(
-      "[MCP Debug] titleText characters BEFORE update:",
-      titleText.characters
-    );
-    await figma.loadFontAsync(titleText.fontName as FontName);
-    // Garantir que label nunca seja undefined ou vazio
-    let safeLabel = buttonData.label;
-    if (
-      !safeLabel ||
-      typeof safeLabel !== "string" ||
-      safeLabel.trim() === ""
-    ) {
-      console.error(
-        "[MCP] label do botão está vazio ou indefinido na atualização! Usando fallback 'Button'. Dados recebidos:",
-        buttonData
-      );
-      safeLabel = "Button";
-    }
-    if (titleText.characters !== safeLabel) {
-      titleText.characters = safeLabel;
-      console.log(
-        "[MCP Debug] titleText characters AFTER update:",
-        titleText.characters
-      );
-    } else {
-      console.log("[MCP Debug] label já está sincronizado, não atualizando.");
-    }
-    // Log para garantir separação
-    console.log(
-      "[MCP Debug] frame.name:",
-      frame.name,
-      "titleText.characters:",
-      titleText.characters
-    );
-  } else {
-    console.log(
-      '[MCP Debug] Title text node (named "Button Title") NOT FOUND!'
-    );
-  }
-
-  // Atualizar estilos
-  if (buttonData.styles) {
-    // Background color
-    if (buttonData.styles.backgroundColor) {
-      const hex = buttonData.styles.backgroundColor;
-      const rgb = hexToRgb(hex);
-      frame.fills = [{ type: "SOLID", color: rgb }];
-    }
-
-    // Border radius
-    if (buttonData.styles.borderRadius) {
-      const borderRadiusPx = parseFloat(
-        buttonData.styles.borderRadius.replace("px", "")
-      );
-      if (!isNaN(borderRadiusPx)) {
-        frame.cornerRadius = borderRadiusPx;
-      }
-    }
-
-    // Border
-    if (buttonData.styles.borderWidth) {
-      const borderWidth = parseFloat(
-        buttonData.styles.borderWidth.replace("px", "")
-      );
-      if (!isNaN(borderWidth)) {
-        frame.strokeWeight = borderWidth;
-      }
-    }
-
-    if (buttonData.styles.borderColor) {
-      const hex = buttonData.styles.borderColor;
-      const rgb = hexToRgb(hex);
-      frame.strokes = [{ type: "SOLID", color: rgb }];
-    }
-
-    // Padding
-    if (buttonData.styles.padding) {
-      const paddingValues = buttonData.styles.padding
-        .split(" ")
-        .map((v) => parseFloat(v.replace("px", "")));
-      if (paddingValues.length === 4) {
-        frame.paddingTop = paddingValues[0];
-        frame.paddingRight = paddingValues[1];
-        frame.paddingBottom = paddingValues[2];
-        frame.paddingLeft = paddingValues[3];
-      }
-    }
-
-    // Text styles
-    const textNodes = frame.findAll(
-      (node) => node.type === "TEXT"
-    ) as TextNode[];
-    if (textNodes.length > 0) {
-      const textNode = textNodes[0];
-
-      if (buttonData.styles.fontSize) {
-        const fontSize = parseFloat(
-          buttonData.styles.fontSize.replace("px", "")
-        );
-        if (!isNaN(fontSize)) {
-          textNode.fontSize = fontSize;
-        }
-      }
-
-      if (buttonData.styles.fontWeight) {
-        try {
-          const currentFont = textNode.fontName as FontName;
-          const fontName = {
-            family: currentFont.family,
-            style:
-              buttonData.styles.fontWeight === "400"
-                ? "Regular"
-                : buttonData.styles.fontWeight === "700"
-                  ? "Bold"
-                  : "Regular",
-          };
-          await figma.loadFontAsync(fontName);
-          textNode.fontName = fontName;
-        } catch (error) {
-          console.log(
-            "[MCP] Erro ao carregar fonte com peso:",
-            buttonData.styles.fontWeight
-          );
-        }
-      }
-
-      if (buttonData.styles.color) {
-        const hex = buttonData.styles.color;
-        const rgb = hexToRgb(hex);
-        textNode.fills = [{ type: "SOLID", color: rgb }];
-      }
-
-      if (buttonData.styles.fontFamily) {
-        try {
-          const fontName = {
-            family: buttonData.styles.fontFamily,
-            style: "Regular",
-          };
-          await figma.loadFontAsync(fontName);
-          textNode.fontName = fontName;
-        } catch (error) {
-          console.log(
-            "[MCP] Erro ao carregar fonte:",
-            buttonData.styles.fontFamily
-          );
-        }
-      }
-    }
-  }
-
-  console.log("[MCP] Todas as alterações foram aplicadas com sucesso.");
-  figma.notify("Botão atualizado do código!", { timeout: 5000 });
-}
-
-// Adicionar listener para mensagens da UI
 figma.ui.onmessage = async (msg) => {
   console.log("[MCP] Mensagem recebida da UI:", msg);
 
@@ -400,9 +214,7 @@ figma.ui.onmessage = async (msg) => {
     try {
       const response = await fetch(
         `http://localhost:3002/api/component/${msg.componentName}`,
-        {
-          cache: "reload",
-        }
+        { cache: "reload" }
       );
       const componentData = await response.json();
       console.log(
@@ -410,14 +222,10 @@ figma.ui.onmessage = async (msg) => {
         componentData
       );
 
-      // Usar o novo renderizador recursivo, começando pelo nó raiz do JSON
       const rootNode = await renderNode(componentData.node);
 
       if (rootNode) {
-        // Centralizar o novo componente na viewport
         figma.viewport.scrollAndZoomIntoView([rootNode]);
-
-        // A lógica de sincronização precisará ser atualizada para lidar com a nova estrutura
         rootNode.setPluginData("isComponent", "true");
         rootNode.setPluginData("componentName", msg.componentName);
         figma.notify(`${msg.componentName} criado com sucesso!`);
@@ -434,4 +242,26 @@ figma.ui.onmessage = async (msg) => {
   }
 };
 
-// A lógica de polling antiga pode ser removida completamente, pois 'documentchange' é mais eficiente.
+const debounceTimers = new Map<string, number>();
+
+figma.on("documentchange", (event) => {
+  for (const change of event.documentChanges) {
+    if (
+      change.type === "PROPERTY_CHANGE" &&
+      !change.node.removed &&
+      change.node.type === "FRAME"
+    ) {
+      const componentName = change.node.getPluginData("componentName");
+      if (componentName) {
+        const existingTimer = debounceTimers.get(change.node.id);
+        if (existingTimer) {
+          clearTimeout(existingTimer);
+        }
+        const timer = setTimeout(() => {
+          updateComponentJson(change.node as FrameNode);
+        }, 500);
+        debounceTimers.set(change.node.id, timer);
+      }
+    }
+  }
+});
