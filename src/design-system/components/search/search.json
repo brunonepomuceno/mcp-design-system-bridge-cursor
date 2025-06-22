@@ -1,19 +1,21 @@
 {
-  "name": "SearchInput",
+  "name": "search",
   "node": {
     "type": "FRAME",
-    "name": "SearchInput",
+    "name": "search",
+    "width": 239,
     "layoutMode": "HORIZONTAL",
     "primaryAxisSizingMode": "FIXED",
     "counterAxisSizingMode": "AUTO",
-    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisAlignItems": "SPACE_BETWEEN",
+    "counterAxisAlignItems": "MIN",
     "itemSpacing": 8,
     "paddingLeft": 16,
     "paddingRight": 16,
     "paddingTop": 12,
     "paddingBottom": 12,
     "styles": {
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#ff0000",
       "borderRadius": "9999px",
       "borderWidth": "1px",
       "borderColor": "#D9D9D9"
@@ -23,8 +25,7 @@
         "type": "TEXT",
         "name": "Placeholder",
         "characters": "Placeholder",
-        "layoutGrow": 1,
-        "textAutoResize": "HEIGHT",
+        "primaryAxisSizingMode": "AUTO",
         "styles": {
           "fontSize": 16,
           "fontFamily": "Inter",
@@ -35,16 +36,19 @@
       {
         "type": "FRAME",
         "name": "IconContainer",
-        "layoutGrow": 0,
-        "primaryAxisSizingMode": "AUTO",
-        "counterAxisSizingMode": "AUTO",
+        "width": 16,
+        "height": 16,
+        "layoutMode": "HORIZONTAL",
+        "primaryAxisAlignItems": "CENTER",
+        "counterAxisAlignItems": "CENTER",
         "children": [
           {
             "type": "TEXT",
             "name": "Icon",
             "characters": "🔍",
             "styles": {
-              "fontSize": 16
+              "fontSize": 14,
+              "color": "#000000"
             }
           }
         ]

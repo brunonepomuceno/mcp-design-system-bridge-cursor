@@ -70,6 +70,8 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
         }
       }
       // Aplicar propriedades de auto-layout de forma explícita e segura
+      if (nodeData.width) frame.resize(nodeData.width, frame.height);
+      if (nodeData.height) frame.resize(frame.width, nodeData.height);
       if (nodeData.layoutMode) frame.layoutMode = nodeData.layoutMode;
       if (nodeData.primaryAxisSizingMode)
         frame.primaryAxisSizingMode = nodeData.primaryAxisSizingMode;
@@ -112,6 +114,8 @@ async function renderNode(nodeData: any): Promise<SceneNode | null> {
   if (name) figmaNode.name = name;
   if (nodeData.layoutGrow !== undefined)
     figmaNode.layoutGrow = nodeData.layoutGrow;
+  if (nodeData.primaryAxisSizingMode && "primaryAxisSizingMode" in figmaNode)
+    (figmaNode as any).primaryAxisSizingMode = nodeData.primaryAxisSizingMode;
 
   // Renderizar filhos (a parte recursiva)
   if (children && "appendChild" in figmaNode) {

@@ -1,15 +1,15 @@
 {
-  "name": "Button",
+  "name": "button",
   "node": {
     "type": "FRAME",
-    "name": "Button",
+    "name": "button",
     "layoutMode": "HORIZONTAL",
     "primaryAxisSizingMode": "AUTO",
     "counterAxisSizingMode": "AUTO",
     "primaryAxisAlignItems": "CENTER",
     "itemSpacing": 10,
     "styles": {
-      "backgroundColor": "#ffff00",
+      "backgroundColor": "#ff0000",
       "borderRadius": "8px",
       "borderWidth": "1px",
       "borderColor": "#000000"

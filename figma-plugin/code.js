@@ -49,6 +49,10 @@ function renderNode(nodeData) {
                     }
                 }
                 // Aplicar propriedades de auto-layout de forma explícita e segura
+                if (nodeData.width)
+                    frame.resize(nodeData.width, frame.height);
+                if (nodeData.height)
+                    frame.resize(frame.width, nodeData.height);
                 if (nodeData.layoutMode)
                     frame.layoutMode = nodeData.layoutMode;
                 if (nodeData.primaryAxisSizingMode)
@@ -98,6 +102,8 @@ function renderNode(nodeData) {
             figmaNode.name = name;
         if (nodeData.layoutGrow !== undefined)
             figmaNode.layoutGrow = nodeData.layoutGrow;
+        if (nodeData.primaryAxisSizingMode && "primaryAxisSizingMode" in figmaNode)
+            figmaNode.primaryAxisSizingMode = nodeData.primaryAxisSizingMode;
         // Renderizar filhos (a parte recursiva)
         if (children && "appendChild" in figmaNode) {
             for (const childData of children) {

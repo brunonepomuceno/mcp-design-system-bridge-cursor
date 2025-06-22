@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './index';
+import { Button } from './button';
 
 const meta: Meta<typeof Button> = {
-  title: 'Components/Button',
+  title: 'Design System/button',
   component: Button,
   tags: ['autodocs'],
   argTypes: {
@@ -135,4 +135,4 @@ export const WithRightIcon: Story = {
       </svg>
     ),
   },
-}; 
+};
