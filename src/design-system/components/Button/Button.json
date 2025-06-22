@@ -16,7 +16,7 @@
     "width": 172,
     "height": 64,
     "styles": {
-      "backgroundColor": "#4000ff",
+      "backgroundColor": "#ff0004",
       "borderColor": "#000000",
       "borderWidth": "1px",
       "borderRadius": "8px"

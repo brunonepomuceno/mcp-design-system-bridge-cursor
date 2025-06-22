@@ -6,16 +6,19 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && vite build",
     "dev": "tsc -w",
     "test": "jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "prepare": "husky install",
     "start:server": "node scripts/generic-api-server.cjs",
-    "watch:plugin": "tsc --project tsconfig.figma.json --watch"
+    "watch:components": "node scripts/watch-components-sync.cjs",
+    "watch:plugin": "tsc -p tsconfig.figma.json -w",
+    "dev:sync": "concurrently \"npm run start:server\" \"npm:watch:components\" \"npm:watch:plugin\"",
+    "watch:json": "node scripts/watch-components-sync.cjs"
   },
   "keywords": [
     "mcp",
@@ -59,6 +62,7 @@
     "@typescript-eslint/parser": "^7.0.2",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
+    "concurrently": "^8.2.2",
     "cspell-dict-pt-br": "^1.1.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",

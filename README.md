@@ -1,126 +1,155 @@
 # MCP Design System Bridge
 
-Este projeto é uma ponte entre o Design System MCP e o Figma, permitindo a sincronização automática de componentes entre o código e o design.
+Este projeto é uma ponte bidirecional entre o Design System e o Figma, permitindo a sincronização automática de componentes entre o código e o design.
 
 ## Estrutura do Projeto
 
+A estrutura principal do projeto foi organizada para separar as responsabilidades:
+
 ```
 .
-├── figma-plugin/          # Plugin do Figma
-├── server/               # Servidor Node.js
-└── src/                  # Código fonte do Design System
-    └── components/       # Componentes do Design System
-        └── Button/       # Componente Button
-            └── Button.json  # Definição do componente
+├── docs/                  # Documentação do projeto
+├── figma-plugin/          # Código-fonte do Plugin do Figma
+├── scripts/               # Scripts de automação e o servidor da API
+└── src/                   # Código-fonte do Design System (React)
+    └── design-system/
+        └── components/
+            ├── button/
+            │   └── button.json  # Definição do componente
+            └── search/
+                └── search.json  # Definição do componente
 ```
 
 ## Pré-requisitos
 
 - Node.js (versão 18 ou superior)
-- npm ou yarn
+- npm
 - Figma Desktop App
 
 ## Instalação
 
-1. Clone o repositório:
+1.  Clone o repositório:
+    ```bash
+    git clone [URL_DO_REPOSITÓRIO]
+    cd mcp-design-system-bridge
+    ```
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+
+## Configuração do Plugin no Figma
+
+1.  Abra o Figma Desktop App.
+2.  Vá em `Plugins > Development > Import plugin from manifest...`.
+3.  Selecione o arquivo `figma-plugin/manifest.json` na raiz do projeto.
+4.  O plugin, agora chamado "MCP Figma Sync", estará disponível em `Plugins > Development`.
+
+## Ambiente de Desenvolvimento (Modo Simples)
+
+Para uma experiência de desenvolvimento completa com sincronização bidirecional, rode o seguinte comando em seu terminal:
 
 ```bash
-git clone [URL_DO_REPOSITÓRIO]
-cd mcp-design-system-bridge
+npm run dev:sync
 ```
 
-2. Instale as dependências:
+Este único comando irá:
 
-```bash
-npm install
-```
+1.  **Iniciar o servidor da API** (porta 3002).
+2.  **Observar as mudanças nos arquivos `.json`** (sincronização Código -> Figma).
+3.  **Compilar o plugin do Figma** em tempo real.
 
-## Desenvolvimento
+Tudo acontecerá em um único terminal.
 
-### Servidor
+### Ambiente de Desenvolvimento (Modo Manual)
 
-O servidor é responsável por fornecer os dados dos componentes para o plugin do Figma. Para iniciar o servidor em modo de desenvolvimento:
+Se preferir rodar cada processo em um terminal separado (útil para depuração), siga os passos abaixo. Você precisará de **3 terminais**.
 
-```bash
-npm run start:server
-```
+1.  **Terminal 1: Servidor da API**
 
-O servidor estará disponível em `http://localhost:3001`.
+    ```bash
+    npm run start:server
+    ```
 
-### Plugin do Figma
+2.  **Terminal 2: Observador de Código (Código -> Figma)**
 
-1. Abra o Figma Desktop App
-2. Vá em Plugins > Development > Import plugin from manifest...
-3. Selecione o arquivo `figma-plugin/manifest.json`
+    ```bash
+    npm run watch:components
+    ```
+
+3.  **Terminal 3: Compilador do Plugin (TypeScript -> JavaScript)**
+    ```bash
+    npm run watch:plugin
+    ```
 
 ## Uso
 
-1. No Figma, abra o plugin através de Plugins > Development > MCP Button Sync
-2. O plugin irá automaticamente:
-   - Buscar a definição do componente Button do servidor
-   - Criar um frame com o botão atualizado
-   - Monitorar mudanças no arquivo `Button.json`
-   - Atualizar o botão no Figma quando houver alterações
+1.  **Criar Componentes (Código -> Figma):**
 
-## Estrutura do Button.json
+    - Com o ambiente de desenvolvimento rodando (`npm run dev:sync`), abra o plugin no Figma (`Plugins > Development > MCP Figma Sync`).
+    - Use o menu dropdown para selecionar um componente (ex: `button`, `search`).
+    - Clique em "Create Component". O plugin buscará o `.json` correspondente via API e renderizará o componente no canvas.
 
-O arquivo `Button.json` define as propriedades do componente Button:
+2.  **Sincronização (Figma -> Código):**
+
+    - Modifique qualquer propriedade de um componente que foi criado pelo plugin (mude a cor, o texto, o padding, etc.).
+    - Após um breve momento, o arquivo `.json` correspondente no seu editor de código será atualizado automaticamente para refletir a mudança.
+
+3.  **Sincronização (Código -> Figma):**
+    - Modifique qualquer propriedade em um arquivo `.json` (ex: altere o `backgroundColor` em `button.json`).
+    - Salve o arquivo. Dentro de alguns segundos, o componente correspondente no canvas do Figma será atualizado automaticamente.
+
+## Estrutura do `component.json`
+
+Os componentes são definidos por arquivos `.json` que seguem uma estrutura hierárquica. Esta estrutura permite a descrição de componentes complexos com múltiplos nós aninhados.
+
+Exemplo (`search.json`):
 
 ```json
 {
-  "styles": {
-    "backgroundColor": "#007AFF",
-    "borderRadius": "8px",
-    "padding": "12px 24px"
-  },
-  "text": "Button"
+  "name": "search",
+  "node": {
+    "type": "FRAME",
+    "name": "search",
+    "width": 239,
+    "layoutMode": "HORIZONTAL",
+    "primaryAxisSizingMode": "FIXED",
+    "counterAxisSizingMode": "AUTO",
+    "primaryAxisAlignItems": "SPACE_BETWEEN",
+    "counterAxisAlignItems": "MIN",
+    "children": [
+      {
+        "type": "TEXT",
+        "name": "Placeholder",
+        "characters": "Placeholder",
+        "primaryAxisSizingMode": "AUTO"
+      },
+      {
+        "type": "FRAME",
+        "name": "IconContainer",
+        "width": 16,
+        "height": 16,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Icon",
+            "characters": "🔍"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
-
-## Build do Plugin Figma
-
-Sempre que você fizer alterações no código TypeScript do plugin (por exemplo, em `figma-plugin/code.ts`), é necessário rodar o build do TypeScript para gerar o arquivo JavaScript que o Figma executa. Para isso, rode:
-
-```
-npx tsc --project tsconfig.json
-```
-
-Isso irá compilar seus arquivos TypeScript e atualizar os arquivos JavaScript no diretório de saída. Só depois desse passo suas alterações terão efeito no Figma.
-
-Se você alterar apenas o `button.json` ou outros arquivos de dados, **não** precisa rodar o build do TypeScript—basta recarregar o plugin no Figma.
-
-### Build automático (modo watch)
-
-Para facilitar o desenvolvimento, você pode usar o modo watch do TypeScript para recompilar automaticamente o plugin sempre que salvar alterações:
-
-```
-npx tsc --project tsconfig.json --watch
-```
-
-Ou, adicione este script ao seu `package.json`:
-
-```
-"scripts": {
-  "watch:plugin": "tsc --project tsconfig.json --watch"
-}
-```
-
-Depois rode:
-
-```
-npm run watch:plugin
-```
-
-Assim, seu código do plugin estará sempre atualizado sem precisar rodar o comando de build manualmente a cada alteração.
 
 ## Contribuição
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
+1.  Faça um fork do projeto.
+2.  Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
+3.  Commit suas mudanças (`git commit -m 'Adiciona nova feature'`).
+4.  Push para a branch (`git push origin feature/nova-feature`).
+5.  Abra um Pull Request.
 
 ## Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença MIT.

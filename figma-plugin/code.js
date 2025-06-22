@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 console.log("[MCP] Plugin iniciado");
 figma.showUI(__html__, { width: 320, height: 400 });
 function hexToRgb(hex) {
@@ -97,7 +108,6 @@ function renderNode(nodeData) {
                 break;
             }
             default:
-                console.warn(`[MCP] Tipo de nó não suportado: ${type}`);
                 return null;
         }
         if (name)
@@ -109,9 +119,8 @@ function renderNode(nodeData) {
         if (children && "appendChild" in figmaNode) {
             for (const childData of children) {
                 const childNode = yield renderNode(childData);
-                if (childNode) {
+                if (childNode)
                     figmaNode.appendChild(childNode);
-                }
             }
         }
         return figmaNode;
@@ -148,8 +157,9 @@ function extractNodeData(node) {
                 styles.borderColor = rgbToHex(paint.color.r, paint.color.g, paint.color.b);
             styles.borderWidth = `${node.strokeWeight}px`;
         }
-        if ("cornerRadius" in node && typeof node.cornerRadius === "number")
+        if ("cornerRadius" in node && typeof node.cornerRadius === "number") {
             styles.borderRadius = `${node.cornerRadius}px`;
+        }
     }
     else if (node.type === "TEXT") {
         nodeData.characters = node.characters;
@@ -164,7 +174,7 @@ function extractNodeData(node) {
             if (paint.type === "SOLID")
                 styles.color = rgbToHex(paint.color.r, paint.color.g, paint.color.b);
         }
-        if (node.textAutoResize)
+        if ("textAutoResize" in node)
             nodeData.textAutoResize = node.textAutoResize;
     }
     if (Object.keys(styles).length > 0)
@@ -181,11 +191,10 @@ function updateComponentJson(frame) {
             const componentName = frame.getPluginData("componentName");
             if (!componentName)
                 return;
-            console.log(`[MCP] Iniciando atualização do ${componentName}.json`);
             const extractedData = extractNodeData(frame);
             const componentData = { name: componentName, node: extractedData };
             const apiUrl = `http://localhost:3002/api/component/${componentName}`;
-            const updateResponse = yield fetch(apiUrl, {
+            yield fetch(apiUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -193,39 +202,95 @@ function updateComponentJson(frame) {
                 },
                 body: JSON.stringify(componentData),
             });
-            if (!updateResponse.ok) {
-                const errorText = yield updateResponse.text();
-                throw new Error(`HTTP error! status: ${updateResponse.status}, message: ${errorText}`);
-            }
-            figma.notify(`${componentName}.json atualizado com sucesso!`);
         }
         catch (error) {
             console.error("[MCP] Erro ao atualizar component.json:", error);
-            figma.notify(`Erro ao atualizar ${frame.getPluginData("componentName")}.json`);
+        }
+    });
+}
+function findAndApplyUpdates(componentNames) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const allNodes = figma.root.findAll((node) => componentNames.includes(node.getPluginData("componentName")));
+        for (const node of allNodes) {
+            if ("children" in node && node.type === "FRAME") {
+                const nodeComponentName = node.getPluginData("componentName");
+                try {
+                    const response = yield fetch(`http://localhost:3002/api/component/${nodeComponentName}`);
+                    const componentData = yield response.json();
+                    if (componentData && componentData.node) {
+                        const _a = componentData.node, { children, styles } = _a, rootProps = __rest(_a, ["children", "styles"]);
+                        // Aplicar propriedades do nó raiz de forma segura
+                        for (const prop in rootProps) {
+                            if (prop !== "children" && prop !== "styles" && prop in node) {
+                                try {
+                                    node[prop] = rootProps[prop];
+                                }
+                                catch (e) { }
+                            }
+                        }
+                        // Aplicar estilos de forma segura
+                        if (styles) {
+                            if (styles.backgroundColor)
+                                node.fills = [
+                                    { type: "SOLID", color: hexToRgb(styles.backgroundColor) },
+                                ];
+                            if (styles.borderRadius)
+                                node.cornerRadius = parseFloat(styles.borderRadius);
+                            if (styles.borderColor && styles.borderWidth) {
+                                node.strokes = [
+                                    { type: "SOLID", color: hexToRgb(styles.borderColor) },
+                                ];
+                                node.strokeWeight = parseFloat(styles.borderWidth);
+                            }
+                        }
+                        // Limpar filhos existentes
+                        while (node.children.length > 0)
+                            node.children[0].remove();
+                        // Renderizar novos filhos
+                        if (children) {
+                            for (const childData of children) {
+                                const childNode = yield renderNode(childData);
+                                if (childNode)
+                                    node.appendChild(childNode);
+                            }
+                        }
+                        figma.notify(`Componente '${nodeComponentName}' atualizado!`);
+                    }
+                }
+                catch (error) {
+                    console.error(`[MCP] Erro ao atualizar o componente ${nodeComponentName}:`, error);
+                }
+            }
+        }
+    });
+}
+function checkForUpdates() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch("http://localhost:3002/api/check-updates");
+            const data = yield response.json();
+            if (data.updates && data.components.length > 0)
+                findAndApplyUpdates(data.components);
+        }
+        catch (error) {
+            /* Silencioso */
         }
     });
 }
 figma.ui.onmessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("[MCP] Mensagem recebida da UI:", msg);
     if (msg.type === "fetch-component-json" && msg.componentName) {
         try {
             const response = yield fetch(`http://localhost:3002/api/component/${msg.componentName}`, { cache: "reload" });
             const componentData = yield response.json();
-            console.log(`[MCP] Dados do componente ${msg.componentName} recebidos:`, componentData);
             const rootNode = yield renderNode(componentData.node);
             if (rootNode) {
                 figma.viewport.scrollAndZoomIntoView([rootNode]);
                 rootNode.setPluginData("isComponent", "true");
                 rootNode.setPluginData("componentName", msg.componentName);
-                figma.notify(`${msg.componentName} criado com sucesso!`);
-            }
-            else {
-                throw new Error("Falha ao renderizar o nó raiz do componente.");
             }
         }
         catch (error) {
             console.error(`[MCP] Erro ao criar componente ${msg.componentName}:`, error);
-            figma.notify(`Erro ao criar componente ${msg.componentName}`);
         }
     }
 });
@@ -238,9 +303,8 @@ figma.on("documentchange", (event) => {
             const componentName = change.node.getPluginData("componentName");
             if (componentName) {
                 const existingTimer = debounceTimers.get(change.node.id);
-                if (existingTimer) {
+                if (existingTimer)
                     clearTimeout(existingTimer);
-                }
                 const timer = setTimeout(() => {
                     updateComponentJson(change.node);
                 }, 500);
@@ -249,3 +313,4 @@ figma.on("documentchange", (event) => {
         }
     }
 });
+setInterval(checkForUpdates, 3000);
